@@ -3,37 +3,79 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Thank You</title>
-
-  <!-- Preload and Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <title>Thank You | ClarityLaunchBot</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="preload" href="style.css" as="style">
   <link rel="stylesheet" href="style.css" />
-  
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
-    .thankyou-wrapper {
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #142233;
+      color: #ffffff;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      font-family: 'Inter', sans-serif;
-      color: white;
+      overflow: hidden;
+    }
+
+    .thankyou-container {
+      background-color: #445777;
+      padding: 3rem 2rem;
+      border-radius: 2rem;
       text-align: center;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      position: relative;
+      z-index: 10;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #FBEDE2;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 1.125rem;
+      line-height: 1.6;
+      color: #E5E8EB;
+      margin-bottom: 2rem;
+    }
+
+    a.button {
+      display: inline-block;
+      background-color: #FF7900;
+      color: #ffffff;
+      padding: 0.75rem 1.5rem;
+      border-radius: 9999px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+    }
+
+    a.button:hover {
+      background-color: #F04E23;
     }
   </style>
 </head>
-
 <body>
-  <div class="thankyou-wrapper">
-    <h1>🎉 Thank you for joining ClarityBots</h1>
+  <div class="thankyou-container">
+    <h1>🎉 You're All Set!</h1>
+    <p>Thanks for joining ClarityBots®.<br>We'll help you get the most out of AI + EOS®.</p>
+    <a class="button" href="index.html">Back to Home</a>
   </div>
 
-  <!-- Fade-in on load -->
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      document.body.classList.add("fade-in");
+    // Trigger confetti animation
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 }
     });
   </script>
 </body>
