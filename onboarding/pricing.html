@@ -29,7 +29,7 @@
     }
 
     .container {
-      max-width: 720px;
+      max-width: 960px;
       margin: 0 auto;
       padding: 4rem 1rem;
       text-align: center;
@@ -42,35 +42,67 @@
     }
 
     label {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       color: #e5e8eb;
       display: flex;
       justify-content: center;
       align-items: center;
       gap: 0.5rem;
-      margin-bottom: 2rem;
+      margin-bottom: 3rem;
     }
 
-    .btn-group {
+    .plans {
       display: flex;
-      justify-content: center;
-      gap: 1rem;
       flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
     }
 
-    button {
+    .plan-card {
+      background-color: #1f2e44;
+      border-radius: 16px;
+      padding: 2rem;
+      width: 280px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .plan-card h2 {
+      color: #ff7900;
+      margin-bottom: 0.5rem;
+    }
+
+    .price {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #fbe0c2;
+      margin-bottom: 1rem;
+    }
+
+    .plan-card ul {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 1.5rem;
+    }
+
+    .plan-card li {
+      margin: 0.3rem 0;
+      font-size: 0.95rem;
+    }
+
+    .plan-card button {
       background-color: #ff7900;
       color: white;
       border: none;
       padding: 0.75rem 1.5rem;
-      font-size: 1.1rem;
+      font-size: 1rem;
+      font-weight: 600;
       border-radius: 12px;
       cursor: pointer;
-      font-weight: 600;
       transition: background-color 0.2s ease;
     }
 
-    button:hover {
+    .plan-card button:hover {
       background-color: #f04e23;
     }
 
@@ -110,9 +142,28 @@
       Start with a 7-day free trial
     </label>
 
-    <div class="btn-group">
-      <button id="basicBtn">Select Basic</button>
-      <button id="proBtn">Select Pro</button>
+    <div class="plans">
+      <div class="plan-card">
+        <h2>Basic</h2>
+        <p class="price">$49/month</p>
+        <ul>
+          <li>✓ 1 bot</li>
+          <li>✓ Starter templates</li>
+          <li>✓ Email support</li>
+        </ul>
+        <button id="basicBtn">Select Basic</button>
+      </div>
+
+      <div class="plan-card">
+        <h2>Pro</h2>
+        <p class="price">$99/month</p>
+        <ul>
+          <li>✓ Everything in Basic</li>
+          <li>✓ Custom branding</li>
+          <li>✓ Priority support</li>
+        </ul>
+        <button id="proBtn">Select Pro</button>
+      </div>
     </div>
   </div>
 
@@ -121,7 +172,7 @@
     <div class="loader"></div>
   </div>
 
-  <!-- JS: Fade-in + Button Logic -->
+  <!-- Script: Fade + Click Logic -->
   <script type="module">
     document.addEventListener("DOMContentLoaded", () => {
       document.body.classList.add("fade-in");
