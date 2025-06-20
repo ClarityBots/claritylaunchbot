@@ -3,222 +3,153 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Select Your Plan | ClarityLaunchBot</title>
-
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <title>Choose Your Plan | ClarityLaunchBot</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
-
   <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      background-color: #142233;
-      font-family: 'Inter', sans-serif;
-      color: white;
-    }
-
     body {
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    body.fade-in {
-      opacity: 1;
-    }
-
-    .container {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 4rem 1rem;
+      margin: 0;
+      padding: 2rem;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to bottom right, #FBEDE2, #E5E8EB);
+      color: #142233;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       text-align: center;
     }
 
     h1 {
-      font-size: 2.5rem;
-      color: #FF7900;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .toggle {
       margin-bottom: 2rem;
+      font-size: 1rem;
+      color: #445777;
     }
 
-    label {
-      font-size: 1.1rem;
-      color: #e5e8eb;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 3rem;
-    }
-
-    .plans {
+    .plan-container {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 2rem;
+      gap: 1.5rem;
+      margin-bottom: 3rem;
     }
 
     .plan-card {
-      background-color: #1f2e44;
+      background: #fff;
+      padding: 1.5rem;
       border-radius: 16px;
-      padding: 2rem;
-      width: 280px;
-      text-align: center;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    }
-
-    .plan-card h2 {
-      color: #ff7900;
-      margin-bottom: 0.5rem;
-    }
-
-    .price {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: #fbe0c2;
-      margin-bottom: 1rem;
-      min-height: 3.5rem;
-    }
-
-    .plan-card ul {
-      list-style: none;
-      padding: 0;
-      margin-bottom: 1.5rem;
-    }
-
-    .plan-card li {
-      margin: 0.3rem 0;
-      font-size: 0.95rem;
-    }
-
-    .plan-card button {
-      background-color: #ff7900;
-      color: white;
-      border: none;
-      padding: 0.75rem 1.5rem;
-      font-size: 1rem;
-      font-weight: 600;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: background-color 0.2s ease;
-    }
-
-    .plan-card button:hover {
-      background-color: #f04e23;
-    }
-
-    /* Loader Overlay */
-    #loaderOverlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(20, 34, 51, 0.85);
-      z-index: 9999;
-      justify-content: center;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+      width: 260px;
+      display: flex;
+      flex-direction: column;
       align-items: center;
     }
 
-    .loader {
-      border: 6px solid #f3f3f3;
-      border-top: 6px solid #ff7900;
-      border-radius: 50%;
-      width: 48px;
-      height: 48px;
-      animation: spin 1s linear infinite;
+    .plan-card h2 {
+      margin-bottom: 0.5rem;
+      font-size: 1.3rem;
     }
 
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+    .plan-card p {
+      font-size: 1rem;
+      color: #445777;
+      margin-bottom: 1.5rem;
+    }
+
+    .select-button {
+      background-color: #FF7900;
+      color: white;
+      font-size: 1rem;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .select-button:hover {
+      background-color: #F04E23;
+      transform: scale(1.05);
+    }
+
+    footer {
+      font-size: 0.9rem;
+      color: #888;
     }
   </style>
 </head>
-
 <body>
-  <div class="container">
-    <h1>Select Your Plan</h1>
+  <h1>Select a ClarityLaunchBot Plan</h1>
 
+  <div class="toggle">
     <label>
       <input type="checkbox" id="trialToggle" />
-      Start with a 7-day free trial
+      Start with free trial
     </label>
+  </div>
 
-    <div class="plans">
-      <div class="plan-card">
-        <h2>Basic</h2>
-        <p class="price" id="basicPrice">
-          $49/month
-        </p>
-        <ul>
-          <li>✓ 1 bot</li>
-          <li>✓ Starter templates</li>
-          <li>✓ Email support</li>
-        </ul>
-        <button id="basicBtn">Select Basic</button>
-      </div>
-
-      <div class="plan-card">
-        <h2>Pro</h2>
-        <p class="price" id="proPrice">
-          $99/month
-        </p>
-        <ul>
-          <li>✓ Everything in Basic</li>
-          <li>✓ Custom branding</li>
-          <li>✓ Priority support</li>
-        </ul>
-        <button id="proBtn">Select Pro</button>
-      </div>
+  <div class="plan-container">
+    <div class="plan-card">
+      <h2>Basic</h2>
+      <p>$129 one-time</p>
+      <button class="select-button" data-plan="basic">Select Basic</button>
+    </div>
+    <div class="plan-card">
+      <h2>Pro</h2>
+      <p>$249 one-time</p>
+      <button class="select-button" data-plan="pro">Select Pro</button>
+    </div>
+    <div class="plan-card">
+      <h2>Premium</h2>
+      <p>$399 one-time</p>
+      <button class="select-button" data-plan="premium">Select Premium</button>
     </div>
   </div>
 
-  <!-- Loader Overlay -->
-  <div id="loaderOverlay">
-    <div class="loader"></div>
-  </div>
+  <footer>Powered by Business Intuition Incorporated</footer>
 
-  <!-- Script: Toggle + Fade Logic -->
   <script type="module">
     document.addEventListener("DOMContentLoaded", () => {
-      document.body.classList.add("fade-in");
-
       const trialToggle = document.getElementById("trialToggle");
-      const basicBtn = document.getElementById("basicBtn");
-      const proBtn = document.getElementById("proBtn");
-      const basicPriceEl = document.getElementById("basicPrice");
-      const proPriceEl = document.getElementById("proPrice");
+      const buttons = document.querySelectorAll(".select-button");
 
-      const updatePrices = () => {
-        if (trialToggle.checked) {
-          basicPriceEl.innerHTML = `<strong>Free for 7 days</strong><br/><span style="font-size: 0.9rem; color: #ccc;">Then $49/month</span>`;
-          proPriceEl.innerHTML = `<strong>Free for 7 days</strong><br/><span style="font-size: 0.9rem; color: #ccc;">Then $99/month</span>`;
-        } else {
-          basicPriceEl.textContent = "$49/month";
-          proPriceEl.textContent = "$99/month";
-        }
-      };
-
-      trialToggle.addEventListener("change", updatePrices);
-      updatePrices(); // initialize
-
-      const navigateWithFade = (targetUrl) => {
-        document.getElementById("loaderOverlay").style.display = "flex";
-        document.body.classList.remove("fade-in");
-        document.body.classList.add("fade-out");
-        setTimeout(() => {
-          window.location.href = targetUrl;
-        }, 300);
-      };
-
-      basicBtn?.addEventListener("click", () => {
-        const trial = trialToggle.checked;
-        navigateWithFade(`checkout.html?plan=basic&trial=${trial}`);
+      // Handle clicks
+      buttons.forEach(button => {
+        button.addEventListener("click", () => {
+          const plan = button.getAttribute("data-plan");
+          const trial = trialToggle && trialToggle.checked ? "true" : "false";
+          window.location.href = `checkout.html?plan=${plan}&trial=${trial}`;
+        });
       });
 
-      proBtn?.addEventListener("click", () => {
-        const trial = trialToggle.checked;
-        navigateWithFade(`checkout.html?plan=pro&trial=${trial}`);
+      // Update prices visually
+      function updatePrices(trialEnabled) {
+        const planCards = document.querySelectorAll(".plan-card");
+        planCards.forEach(card => {
+          const plan = card.querySelector(".select-button").dataset.plan;
+          const price = card.querySelector("p");
+
+          if (trialEnabled) {
+            price.textContent = "Free Trial";
+          } else {
+            if (plan === "basic") price.textContent = "$129 one-time";
+            if (plan === "pro") price.textContent = "$249 one-time";
+            if (plan === "premium") price.textContent = "$399 one-time";
+          }
+        });
+      }
+
+      // Trigger price change on toggle
+      trialToggle.addEventListener("change", () => {
+        updatePrices(trialToggle.checked);
       });
+
+      // Initialize price display on page load
+      updatePrices(trialToggle.checked);
     });
   </script>
 </body>

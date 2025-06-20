@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Thank You | ClarityLaunchBot</title>
+  <title>ClarityLaunchBot</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
     body {
@@ -20,25 +20,33 @@
       text-align: center;
     }
 
-    .card {
-      background-color: #fff;
-      padding: 2rem 2.5rem;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-      max-width: 480px;
-      width: 100%;
-    }
-
     h1 {
-      font-size: 2rem;
+      font-size: 2.5rem;
+      color: #142233;
       margin-bottom: 1rem;
-      color: #F04E23;
     }
 
     p {
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       color: #445777;
-      margin-bottom: 0;
+      margin-bottom: 2rem;
+    }
+
+    .start-button {
+      display: inline-block;
+      background-color: #FF7900;
+      color: white;
+      text-decoration: none;
+      font-size: 1.1rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .start-button:hover {
+      background-color: #F04E23;
+      transform: scale(1.05);
     }
 
     footer {
@@ -49,22 +57,10 @@
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>🎉 Thank You!</h1>
-    <p>Your onboarding is complete and you're all set.</p>
-  </div>
+  <h1>Welcome to ClarityBots</h1>
+  <p>Your custom onboarding experience starts here.</p>
+  <a href="onboarding/pricing.html" class="start-button">Get Started</a>
 
   <footer>Powered by Business Intuition Incorporated</footer>
-
-  <!-- Confetti animation -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-  <script>
-    // Fire confetti on page load
-    confetti({
-      particleCount: 120,
-      spread: 80,
-      origin: { y: 0.6 }
-    });
-  </script>
 </body>
 </html>

@@ -4,148 +4,101 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Checkout | ClarityLaunchBot</title>
-
-  <!-- Preload thankyou + confetti -->
-  <link rel="prefetch" href="thankyou.html" as="document" />
-  <link rel="preload" href="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js" as="script" />
-
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
-
   <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      background-color: #142233;
-      font-family: 'Inter', sans-serif;
-      color: white;
-    }
-
     body {
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    body.fade-in {
-      opacity: 1;
-    }
-
-    .container {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 4rem 1rem;
+      margin: 0;
+      padding: 2rem;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to bottom right, #FBEDE2, #E5E8EB);
+      color: #142233;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       text-align: center;
     }
 
     h1 {
-      font-size: 2.25rem;
-      color: #FF7900;
-      margin-bottom: 1rem;
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
     }
 
     .summary {
-      font-size: 1.25rem;
-      margin-bottom: 2.5rem;
-      color: #e5e8eb;
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+      color: #445777;
     }
 
-    button {
-      background-color: #ff7900;
+    form {
+      background-color: white;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+      width: 100%;
+      max-width: 400px;
+      text-align: left;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.6rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    .checkout-button {
+      display: inline-block;
+      width: 100%;
+      background-color: #FF7900;
       color: white;
-      border: none;
-      padding: 0.75rem 1.5rem;
+      text-align: center;
+      padding: 0.75rem;
       font-size: 1.1rem;
       font-weight: 600;
-      border-radius: 12px;
+      border: none;
+      border-radius: 10px;
       cursor: pointer;
-      transition: background-color 0.2s ease;
+      transition: background-color 0.3s ease, transform 0.2s ease;
     }
 
-    button:hover {
-      background-color: #f04e23;
+    .checkout-button:hover {
+      background-color: #F04E23;
+      transform: scale(1.02);
     }
 
-    /* Loader Overlay */
-    #loaderOverlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(20, 34, 51, 0.85);
-      z-index: 9999;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .loader {
-      border: 6px solid #f3f3f3;
-      border-top: 6px solid #ff7900;
-      border-radius: 50%;
-      width: 48px;
-      height: 48px;
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+    footer {
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      color: #888;
     }
   </style>
 </head>
-
 <body>
-  <div class="container">
-    <h1>Checkout</h1>
-    <div class="summary" id="planSummary">Loading your selection...</div>
-    <button id="confirmBtn">Confirm & Launch</button>
-  </div>
+  <h1>Complete Your Checkout</h1>
+  <div class="summary" id="planSummary">Loading plan details...</div>
 
-  <!-- Loader Overlay -->
-  <div id="loaderOverlay">
-    <div class="loader"></div>
-  </div>
+  <form id="checkoutForm">
+    <label for="fullName">Full Name</label>
+    <input type="text" id="fullName" name="fullName" required />
 
-  <!-- Script -->
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      document.body.classList.add("fade-in");
+    <label for="email">Email Address</label>
+    <input type="email" id="email" name="email" required />
 
-      const urlParams = new URLSearchParams(window.location.search);
-      const plan = urlParams.get("plan") || "unknown";
-      const trial = urlParams.get("trial") === "true";
+    <button type="submit" class="checkout-button">Complete Checkout</button>
+  </form>
 
-      const prices = {
-        basic: "$49/month",
-        pro: "$99/month"
-      };
+  <footer>Powered by Business Intuition Incorporated</footer>
 
-      const planName = plan.charAt(0).toUpperCase() + plan.slice(1);
-      const summaryEl = document.getElementById("planSummary");
-
-      if (trial && prices[plan]) {
-        summaryEl.innerHTML = `
-          <strong>${planName} Plan</strong><br>
-          Free for 7 days, then ${prices[plan]}
-        `;
-      } else if (prices[plan]) {
-        summaryEl.innerHTML = `
-          <strong>${planName} Plan</strong><br>
-          ${prices[plan]}
-        `;
-      } else {
-        summaryEl.textContent = "Invalid plan selected.";
-      }
-
-      document.getElementById("confirmBtn").addEventListener("click", () => {
-        document.getElementById("loaderOverlay").style.display = "flex";
-        document.body.classList.remove("fade-in");
-        document.body.classList.add("fade-out");
-        setTimeout(() => {
-          window.location.href = "thankyou.html";
-        }, 300);
-      });
-    });
-  </script>
+  <script src="checkout.js" type="module"></script>
 </body>
 </html>
