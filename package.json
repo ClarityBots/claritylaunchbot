@@ -1,17 +1,19 @@
 {
   "name": "claritylaunchbot",
   "version": "1.0.0",
-  "description": "ClarityLaunchBot frontend project",
+  "description": "ClarityLaunchBot – AI-enhanced onboarding & checkout",
+  "main": "index.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
   },
-  "dependencies": {
-    "vite": "^4.5.0"
-  },
-  "devDependencies": {},
-  "keywords": [],
   "author": "Kyle Fowles",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "stripe": "^12.0.0"
+  },
+  "devDependencies": {
+    "vite": "^4.5.0"
+  }
 }
