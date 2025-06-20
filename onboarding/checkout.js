@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  // ✅ Plan summary logic
+  // ✅ Read URL params
   const params = new URLSearchParams(window.location.search);
   const plan = params.get("plan") || "basic";
   const trial = params.get("trial") === "true";
@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
     summary.textContent = `${planName} – ${priceText}`;
   }
 
-  // ✅ Form submission handler
+  // ✅ Handle form submission
   const form = document.getElementById("checkoutForm");
   if (form) {
     form.addEventListener("submit", async (e) => {
@@ -67,10 +67,9 @@ document.addEventListener("DOMContentLoaded", () => {
           timestamp: serverTimestamp()
         });
 
-        // ✅ Success redirect
         window.location.href = "thankyou.html";
-      } catch (error) {
-        console.error("❌ Error submitting form:", error);
+      } catch (err) {
+        console.error("❌ Firebase error:", err);
         alert("Something went wrong. Please try again.");
       }
     });
