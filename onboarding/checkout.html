@@ -5,22 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Checkout | ClarityLaunchBot</title>
 
-  <!-- Fonts & Styles -->
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
 
   <style>
-    html {
+    html, body {
+      margin: 0;
+      padding: 0;
       background-color: #142233;
+      font-family: 'Inter', sans-serif;
+      color: white;
     }
 
     body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      background-color: #142233;
-      color: white;
       opacity: 0;
       transition: opacity 0.3s ease;
     }
@@ -37,13 +36,15 @@
     }
 
     h1 {
-      font-size: 2.5rem;
-      margin-bottom: 1.5rem;
+      font-size: 2.25rem;
+      color: #FF7900;
+      margin-bottom: 1rem;
     }
 
     .summary {
       font-size: 1.25rem;
-      margin-bottom: 2rem;
+      margin-bottom: 2.5rem;
+      color: #e5e8eb;
     }
 
     button {
@@ -52,7 +53,8 @@
       border: none;
       padding: 0.75rem 1.5rem;
       font-size: 1.1rem;
-      border-radius: 8px;
+      font-weight: 600;
+      border-radius: 12px;
       cursor: pointer;
       transition: background-color 0.2s ease;
     }
@@ -60,17 +62,47 @@
     button:hover {
       background-color: #f04e23;
     }
+
+    /* Loader Overlay */
+    #loaderOverlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(20, 34, 51, 0.85);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .loader {
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid #ff7900;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
   </style>
 </head>
 
 <body>
   <div class="container">
     <h1>Checkout</h1>
-    <div class="summary" id="planSummary">Loading...</div>
+    <div class="summary" id="planSummary">Loading your selection...</div>
     <button id="confirmBtn">Confirm & Launch</button>
   </div>
 
-  <!-- Fade-in -->
+  <!-- Loader Overlay -->
+  <div id="loaderOverlay">
+    <div class="loader"></div>
+  </div>
+
+  <!-- Logic -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       document.body.classList.add("fade-in");
@@ -79,10 +111,30 @@
       const plan = urlParams.get("plan") || "unknown";
       const trial = urlParams.get("trial") === "true";
 
-      const summaryText = `You selected the <strong>${plan.toUpperCase()}</strong> plan${trial ? " with a 7-day free trial." : "."}`;
-      document.getElementById("planSummary").innerHTML = summaryText;
+      const prices = {
+        basic: "$49/month",
+        pro: "$99/month"
+      };
+
+      const planName = plan.charAt(0).toUpperCase() + plan.slice(1);
+      const summaryEl = document.getElementById("planSummary");
+
+      if (trial && prices[plan]) {
+        summaryEl.innerHTML = `
+          <strong>${planName} Plan</strong><br>
+          Free for 7 days, then ${prices[plan]}
+        `;
+      } else if (prices[plan]) {
+        summaryEl.innerHTML = `
+          <strong>${planName} Plan</strong><br>
+          ${prices[plan]}
+        `;
+      } else {
+        summaryEl.textContent = "Invalid plan selected.";
+      }
 
       document.getElementById("confirmBtn").addEventListener("click", () => {
+        document.getElementById("loaderOverlay").style.display = "flex";
         document.body.classList.remove("fade-in");
         document.body.classList.add("fade-out");
         setTimeout(() => {
