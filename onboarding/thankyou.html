@@ -3,20 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Thank You</title>
+  <title>Thank You!</title>
 
   <!-- Fonts and Styles -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
-
-  <!-- ✨ Fade-in BEFORE rendering -->
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      document.body.classList.add("fade-in");
-    });
-  </script>
 
   <style>
     html {
@@ -24,29 +17,50 @@
     }
 
     body {
-      opacity: 0;
-      transition: opacity 0.3s ease;
+      margin: 0;
       font-family: 'Inter', sans-serif;
       color: white;
+      background-color: #142233;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      min-height: 100vh;
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
 
     body.fade-in {
       opacity: 1;
     }
 
-    .wrapper {
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
+    h1 {
+      font-size: 2rem;
+      padding: 2rem;
     }
   </style>
 </head>
 
 <body>
-  <div class="wrapper">
-    <h1>🎉 Thank you for signing up!</h1>
-  </div>
+  <h1>🎉 Thank you for signing up!</h1>
+
+  <!-- Fade-in -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      document.body.classList.add("fade-in");
+    });
+  </script>
+
+  <!-- Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      confetti({
+        particleCount: 150,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+    });
+  </script>
 </body>
 </html>

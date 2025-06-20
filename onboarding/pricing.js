@@ -27,11 +27,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 300);
   };
 
-  basicBtn?.addEventListener("click", () => {
-    navigateWithFade("basic", trialToggle.checked);
-  });
+  if (basicBtn && proBtn && trialToggle) {
+    basicBtn.addEventListener("click", () => {
+      const trial = trialToggle.checked;
+      navigateWithFade("basic", trial);
+    });
 
-  proBtn?.addEventListener("click", () => {
-    navigateWithFade("pro", trialToggle.checked);
-  });
+    proBtn.addEventListener("click", () => {
+      const trial = trialToggle.checked;
+      navigateWithFade("pro", trial);
+    });
+  }
 });

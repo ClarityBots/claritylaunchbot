@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Choose Your ClarityLaunchBot Plan</title>
+  <title>Select Your Plan | ClarityLaunchBot</title>
 
   <!-- Fonts & Style -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -19,8 +19,8 @@
     body {
       margin: 0;
       font-family: 'Inter', sans-serif;
-      color: white;
       background-color: #142233;
+      color: white;
       opacity: 0;
       transition: opacity 0.3s ease;
     }
@@ -37,15 +37,15 @@
     }
 
     h1 {
-      font-size: 2rem;
+      font-size: 2.5rem;
       margin-bottom: 1.5rem;
     }
 
     label {
-      font-size: 1rem;
+      font-size: 1.1rem;
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       gap: 0.5rem;
       margin-bottom: 2rem;
     }
@@ -62,7 +62,7 @@
       color: white;
       border: none;
       padding: 0.75rem 1.5rem;
-      font-size: 1rem;
+      font-size: 1.1rem;
       border-radius: 8px;
       cursor: pointer;
       transition: background-color 0.2s ease;
@@ -76,10 +76,11 @@
 
 <body>
   <div class="container">
-    <h1>Choose Your Plan</h1>
+    <h1>Select Your Plan</h1>
+
     <label>
       <input type="checkbox" id="trialToggle" />
-      Try it free for 7 days
+      Start with a 7-day free trial
     </label>
 
     <div class="btn-group">
@@ -88,14 +89,14 @@
     </div>
   </div>
 
-  <!-- Fade in -->
+  <!-- Fade-in Script -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       document.body.classList.add("fade-in");
     });
   </script>
 
-  <!-- Logic -->
+  <!-- Module: Logic -->
   <script type="module" src="pricing.js"></script>
 </body>
 </html>
