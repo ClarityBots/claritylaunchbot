@@ -90,8 +90,17 @@ footer {
 }
 
 /* Fade transition effect */
+html {
+  background-color: #142233; /* fallback brand color */
+}
+
 body {
+  opacity: 0;
   transition: opacity 0.3s ease;
+}
+
+body.fade-in {
+  opacity: 1;
 }
 
 body.fade-out {

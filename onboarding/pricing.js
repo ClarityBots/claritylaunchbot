@@ -1,14 +1,8 @@
-// ✅ Prevent caching issues on browser back button
-window.addEventListener("pageshow", (event) => {
-  if (event.persisted) {
-    window.location.reload();
-  }
-});
+// pricing.js
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// ✅ Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyBFPU03g16fanyT-a6wJ5NqRxtCwW-Opsg",
   authDomain: "claritylaunchbot.firebaseapp.com",
@@ -24,57 +18,24 @@ const db = getFirestore(app);
 
 document.addEventListener("DOMContentLoaded", () => {
   const trialToggle = document.getElementById("trialToggle");
-  const priceBasic = document.getElementById("price-basic");
-  const pricePro = document.getElementById("price-pro");
-  const btnBasic = document.getElementById("btn-basic");
-  const btnPro = document.getElementById("btn-pro");
+  const basicBtn = document.getElementById("basicBtn");
+  const proBtn = document.getElementById("proBtn");
 
-  const trialPrices = {
-    basic: "$0",
-    pro: "$0"
+  const navigateWithFade = (plan, trial) => {
+    document.body.classList.remove("fade-in");
+    document.body.classList.add("fade-out");
+    setTimeout(() => {
+      window.location.href = `checkout.html?plan=${plan}&trial=${trial}`;
+    }, 300);
   };
 
-  const standardPrices = {
-    basic: "$49/mo",
-    pro: "$199/mo"
-  };
+  basicBtn.addEventListener("click", () => {
+    const trial = trialToggle.checked;
+    navigateWithFade("basic", trial);
+  });
 
-  function updatePrices() {
-    const useTrial = trialToggle?.checked;
-    if (priceBasic && pricePro) {
-      priceBasic.innerText = useTrial ? trialPrices.basic : standardPrices.basic;
-      pricePro.innerText = useTrial ? trialPrices.pro : standardPrices.pro;
-    }
-  }
-
-  async function handleCheckout(plan) {
-    const useTrial = trialToggle?.checked;
-    const signupData = {
-      plan,
-      trial: useTrial,
-      timestamp: serverTimestamp()
-    };
-
-    try {
-      await addDoc(collection(db, "launchbot_signups"), signupData);
-      window.location.replace(`/onboarding/checkout.html?plan=${plan}&trial=${useTrial}`);
-    } catch (error) {
-      console.error("Error saving signup data:", error);
-      alert("Something went wrong. Please try again.");
-    }
-  }
-
-  if (trialToggle) {
-    trialToggle.addEventListener("change", updatePrices);
-  }
-
-  if (btnBasic) {
-    btnBasic.addEventListener("click", () => handleCheckout("basic"));
-  }
-
-  if (btnPro) {
-    btnPro.addEventListener("click", () => handleCheckout("pro"));
-  }
-
-  updatePrices();
+  proBtn.addEventListener("click", () => {
+    const trial = trialToggle.checked;
+    navigateWithFade("pro", trial);
+  });
 });
