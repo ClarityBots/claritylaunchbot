@@ -77,6 +77,7 @@
       font-weight: bold;
       color: #fbe0c2;
       margin-bottom: 1rem;
+      min-height: 3.5rem;
     }
 
     .plan-card ul {
@@ -145,7 +146,9 @@
     <div class="plans">
       <div class="plan-card">
         <h2>Basic</h2>
-        <p class="price">$49/month</p>
+        <p class="price" id="basicPrice">
+          $49/month
+        </p>
         <ul>
           <li>✓ 1 bot</li>
           <li>✓ Starter templates</li>
@@ -156,7 +159,9 @@
 
       <div class="plan-card">
         <h2>Pro</h2>
-        <p class="price">$99/month</p>
+        <p class="price" id="proPrice">
+          $99/month
+        </p>
         <ul>
           <li>✓ Everything in Basic</li>
           <li>✓ Custom branding</li>
@@ -172,7 +177,7 @@
     <div class="loader"></div>
   </div>
 
-  <!-- Script: Fade + Click Logic -->
+  <!-- Script: Toggle + Fade Logic -->
   <script type="module">
     document.addEventListener("DOMContentLoaded", () => {
       document.body.classList.add("fade-in");
@@ -180,6 +185,21 @@
       const trialToggle = document.getElementById("trialToggle");
       const basicBtn = document.getElementById("basicBtn");
       const proBtn = document.getElementById("proBtn");
+      const basicPriceEl = document.getElementById("basicPrice");
+      const proPriceEl = document.getElementById("proPrice");
+
+      const updatePrices = () => {
+        if (trialToggle.checked) {
+          basicPriceEl.innerHTML = `<strong>Free for 7 days</strong><br/><span style="font-size: 0.9rem; color: #ccc;">Then $49/month</span>`;
+          proPriceEl.innerHTML = `<strong>Free for 7 days</strong><br/><span style="font-size: 0.9rem; color: #ccc;">Then $99/month</span>`;
+        } else {
+          basicPriceEl.textContent = "$49/month";
+          proPriceEl.textContent = "$99/month";
+        }
+      };
+
+      trialToggle.addEventListener("change", updatePrices);
+      updatePrices(); // initialize
 
       const navigateWithFade = (targetUrl) => {
         document.getElementById("loaderOverlay").style.display = "flex";
