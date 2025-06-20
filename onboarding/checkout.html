@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Checkout | ClarityLaunchBot</title>
+  <title>Checkout</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
     body {
@@ -12,93 +12,67 @@
       font-family: 'Inter', sans-serif;
       background: linear-gradient(to bottom right, #FBEDE2, #E5E8EB);
       color: #142233;
-      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      text-align: center;
+      min-height: 100vh;
+      opacity: 0;
+      transition: opacity 0.3s ease-in;
     }
-
+    body.fade-in {
+      opacity: 1;
+    }
     h1 {
       font-size: 2rem;
-      margin-bottom: 0.5rem;
+      margin-bottom: 1rem;
     }
-
-    .summary {
-      margin-bottom: 2rem;
-      font-size: 1.1rem;
-      color: #445777;
-    }
-
     form {
-      background-color: white;
+      background-color: #fff;
+      border-radius: 12px;
       padding: 2rem;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-      width: 100%;
-      max-width: 400px;
-      text-align: left;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      width: 300px;
     }
-
-    label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-weight: 600;
-    }
-
     input {
-      width: 100%;
-      padding: 0.6rem;
-      margin-bottom: 1.5rem;
-      border: 1px solid #ccc;
-      border-radius: 8px;
+      padding: 0.5rem;
       font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
     }
-
-    .checkout-button {
-      display: inline-block;
-      width: 100%;
+    button {
       background-color: #FF7900;
-      color: white;
-      text-align: center;
-      padding: 0.75rem;
-      font-size: 1.1rem;
-      font-weight: 600;
+      color: #fff;
       border: none;
-      border-radius: 10px;
+      padding: 0.75rem;
+      border-radius: 8px;
+      font-weight: 600;
       cursor: pointer;
-      transition: background-color 0.3s ease, transform 0.2s ease;
     }
-
-    .checkout-button:hover {
-      background-color: #F04E23;
-      transform: scale(1.02);
-    }
-
-    footer {
-      margin-top: 2rem;
-      font-size: 0.9rem;
-      color: #888;
+    #planSummary {
+      margin-top: 1rem;
+      font-weight: 600;
+      color: #F04E23;
     }
   </style>
 </head>
 <body>
-  <h1>Complete Your Checkout</h1>
-  <div class="summary" id="planSummary">Loading plan details...</div>
-
+  <h1>Checkout</h1>
   <form id="checkoutForm">
-    <label for="fullName">Full Name</label>
-    <input type="text" id="fullName" name="fullName" required />
-
-    <label for="email">Email Address</label>
-    <input type="email" id="email" name="email" required />
-
-    <button type="submit" class="checkout-button">Complete Checkout</button>
+    <input type="text" id="fullName" placeholder="Full Name" required />
+    <input type="email" id="email" placeholder="Email Address" required />
+    <button type="submit">Complete Sign Up</button>
+    <div id="planSummary"></div>
   </form>
 
-  <footer>Powered by Business Intuition Incorporated</footer>
-
-  <script src="checkout.js" type="module"></script>
+  <script type="module" src="checkout.js"></script>
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      document.body.classList.add("fade-in");
+    });
+  </script>
 </body>
 </html>

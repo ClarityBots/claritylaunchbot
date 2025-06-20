@@ -18,8 +18,8 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      transition: opacity 0.3s ease-in;
       opacity: 0;
+      transition: opacity 0.3s ease-in;
     }
     body.fade-in {
       opacity: 1;
@@ -113,7 +113,6 @@
       updatePrices(e.target.checked);
     });
 
-    // Fade in
     window.addEventListener("DOMContentLoaded", () => {
       document.body.classList.add("fade-in");
     });
