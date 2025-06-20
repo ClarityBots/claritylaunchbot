@@ -3,28 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Thank You!</title>
+  <title>Thank You | ClarityLaunchBot</title>
 
-  <!-- Fonts and Styles -->
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
 
   <style>
-    html {
+    html, body {
+      margin: 0;
+      padding: 0;
       background-color: #142233;
+      font-family: 'Inter', sans-serif;
+      color: white;
     }
 
     body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      color: white;
-      background-color: #142233;
       display: flex;
       justify-content: center;
       align-items: center;
-      text-align: center;
+      flex-direction: column;
       min-height: 100vh;
       opacity: 0;
       transition: opacity 0.3s ease;
@@ -35,32 +34,64 @@
     }
 
     h1 {
-      font-size: 2rem;
-      padding: 2rem;
+      font-size: 2.5rem;
+      color: #ff7900;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 1.2rem;
+      color: #e5e8eb;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .btn-home {
+      background-color: #ff7900;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .btn-home:hover {
+      background-color: #f04e23;
     }
   </style>
 </head>
 
 <body>
-  <h1>🎉 Thank you for signing up!</h1>
-
-  <!-- Fade-in -->
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      document.body.classList.add("fade-in");
-    });
-  </script>
+  <h1>🎉 You're In!</h1>
+  <p>Thanks for signing up. Your ClarityLaunchBot setup has begun.</p>
+  <button class="btn-home" onclick="goHome()">Back to Home</button>
 
   <!-- Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <!-- Logic -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
+      document.body.classList.add("fade-in");
+
       confetti({
         particleCount: 150,
         spread: 70,
         origin: { y: 0.6 }
       });
     });
+
+    function goHome() {
+      document.body.classList.remove("fade-in");
+      document.body.classList.add("fade-out");
+      setTimeout(() => {
+        window.location.href = "pricing.html";
+      }, 300);
+    }
   </script>
 </body>
 </html>

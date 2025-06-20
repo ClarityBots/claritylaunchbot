@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Checkout | ClarityLaunchBot</title>
 
+  <!-- Preload thankyou + confetti -->
+  <link rel="prefetch" href="thankyou.html" as="document" />
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js" as="script" />
+
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -102,7 +106,7 @@
     <div class="loader"></div>
   </div>
 
-  <!-- Logic -->
+  <!-- Script -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       document.body.classList.add("fade-in");
