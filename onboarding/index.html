@@ -3,38 +3,64 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome to ClarityLaunchBot</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>ClarityLaunchBot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
     body {
+      margin: 0;
+      padding: 0;
       font-family: 'Inter', sans-serif;
+      background-color: #f9f9f9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: #142233;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 1.2rem;
+      color: #445777;
+      margin-bottom: 2rem;
+    }
+
+    .start-button {
+      display: inline-block;
+      background-color: #FF7900;
+      color: white;
+      text-decoration: none;
+      font-size: 1.1rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .start-button:hover {
+      background-color: #F04E23;
+      transform: scale(1.05);
+    }
+
+    footer {
+      position: absolute;
+      bottom: 1rem;
+      font-size: 0.9rem;
+      color: #888;
     }
   </style>
-
-  <!-- Preload fonts and styles -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="preload" href="style.css" as="style">
-
 </head>
-<body class="min-h-screen flex items-center justify-center bg-[#FBEDE2] text-[#142233] px-4">
-  <div class="text-center max-w-lg w-full space-y-6">
-    <img src="/onboarding/images/business_intuition_logo.png" alt="ClarityBots Logo" class="mx-auto h-20 mb-4" />
-    <h1 class="text-4xl font-bold text-[#FF7900]">Welcome to ClarityBots®</h1>
-    <p class="text-lg text-[#445777]">Your AI gateway to EOS® .</p>
-    <button onclick="window.location.href='pricing.html'"
-      class="mt-4 bg-[#FF7900] hover:bg-[#F04E23] text-white font-semibold text-lg px-6 py-3 rounded-2xl shadow-md transition">
-      Get Started
-    </button>
-  </div>
+<body>
+  <h1>Welcome to ClarityLaunchBot</h1>
+  <p>Your custom onboarding experience starts here.</p>
+  <a href="/onboarding/pricing.html" class="start-button">Get Started</a>
 
-  <!-- Fade-in on load -->
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      document.body.classList.add("fade-in");
-    });
-  </script>
-
+  <footer>Powered by Business Intuition Incorporated</footer>
 </body>
 </html>
