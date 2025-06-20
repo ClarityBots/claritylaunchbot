@@ -3,64 +3,99 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LaunchBot Pricing</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Choose Your ClarityLaunchBot Plan</title>
 
-  <!-- Preload fonts and styles -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="preload" href="style.css" as="style">
+  <!-- Fonts & Style -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 
+  <style>
+    html {
+      background-color: #142233;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      color: white;
+      background-color: #142233;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    body.fade-in {
+      opacity: 1;
+    }
+
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 4rem 1rem;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    button {
+      background-color: #ff7900;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #f04e23;
+    }
+  </style>
 </head>
-<body class="bg-[#FBEDE2] text-[#142233] font-sans min-h-screen flex flex-col items-center justify-center px-4 py-8">
 
-  <h1 class="text-4xl font-bold text-[#F04E23] mb-6">Choose Your ClarityBots® Plan</h1>
+<body>
+  <div class="container">
+    <h1>Choose Your Plan</h1>
+    <label>
+      <input type="checkbox" id="trialToggle" />
+      Try it free for 7 days
+    </label>
 
-  <label class="flex items-center gap-2 mb-8 text-lg">
-    <input type="checkbox" id="trialToggle" class="w-5 h-5 text-[#FF7900] focus:ring-[#F04E23]">
-    Activate 14-day Free Trial
-  </label>
-
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl">
-    <!-- Basic Plan -->
-    <div class="bg-white shadow-xl rounded-2xl p-6 flex flex-col items-center">
-      <h2 class="text-2xl font-bold text-[#142233] mb-2">ClarityBots Only</h2>
-      <p id="price-basic" class="text-3xl text-[#FF7900] font-bold mb-4">$49/mo</p>
-      <ul class="text-sm text-gray-600 mb-6 space-y-1">
-        <li>✅ Access to All Bots</li>
-        <li>✅ EOS®-aligned Tools</li>
-        <li>❌ No Consulting Included</li>
-      </ul>
-      <button id="btn-basic" class="bg-[#F04E23] hover:bg-[#FF7900] text-white font-bold py-2 px-6 rounded-xl shadow transition-all">
-        Select Basic
-      </button>
-    </div>
-
-    <!-- Pro Plan -->
-    <div class="bg-white shadow-xl rounded-2xl p-6 flex flex-col items-center">
-      <h2 class="text-2xl font-bold text-[#142233] mb-2">ClarityBots + Consulting</h2>
-      <p id="price-pro" class="text-3xl text-[#FF7900] font-bold mb-4">$199/mo</p>
-      <ul class="text-sm text-gray-600 mb-6 space-y-1">
-        <li>✅ All Features of Basic</li>
-        <li>✅ 1:1 EOS® Expert Consulting</li>
-        <li>✅ Monthly Strategy Call</li>
-      </ul>
-      <button id="btn-pro" class="bg-[#F04E23] hover:bg-[#FF7900] text-white font-bold py-2 px-6 rounded-xl shadow transition-all">
-        Select Pro
-      </button>
+    <div class="btn-group">
+      <button id="basicBtn">Select Basic</button>
+      <button id="proBtn">Select Pro</button>
     </div>
   </div>
 
-  <!-- JavaScript module -->
-  <script type="module" src="./pricing.js?v=1.0.3"></script>
-
-  <!-- Fade-in on load -->
+  <!-- Fade in -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       document.body.classList.add("fade-in");
     });
   </script>
 
+  <!-- Logic -->
+  <script type="module" src="pricing.js"></script>
 </body>
 </html>

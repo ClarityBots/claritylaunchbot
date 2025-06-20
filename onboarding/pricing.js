@@ -1,5 +1,3 @@
-// pricing.js
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -7,7 +5,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyBFPU03g16fanyT-a6wJ5NqRxtCwW-Opsg",
   authDomain: "claritylaunchbot.firebaseapp.com",
   projectId: "claritylaunchbot",
-  storageBucket: "claritylaunchbot.firebasestorage.app",
+  storageBucket: "claritylaunchbot.appspot.com",
   messagingSenderId: "558688698630",
   appId: "1:558688698630:web:67de9a65cfe738bd615e87",
   measurementId: "G-6TES3TB1LK"
@@ -29,13 +27,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 300);
   };
 
-  basicBtn.addEventListener("click", () => {
-    const trial = trialToggle.checked;
-    navigateWithFade("basic", trial);
+  basicBtn?.addEventListener("click", () => {
+    navigateWithFade("basic", trialToggle.checked);
   });
 
-  proBtn.addEventListener("click", () => {
-    const trial = trialToggle.checked;
-    navigateWithFade("pro", trial);
+  proBtn?.addEventListener("click", () => {
+    navigateWithFade("pro", trialToggle.checked);
   });
 });
