@@ -2,7 +2,6 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  // ✅ Firebase config
   const firebaseConfig = {
     apiKey: "AIzaSyBFPU03g16fanyT-a6wJ5NqRxtCwW-Opsg",
     authDomain: "claritylaunchbot.firebaseapp.com",
@@ -16,18 +15,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  // ✅ Read URL params
   const params = new URLSearchParams(window.location.search);
   const plan = params.get("plan") || "basic";
   const trial = params.get("trial") === "true";
-  const summary = document.getElementById("planSummary");
 
+  const summary = document.getElementById("planSummary");
   const planDisplayNames = {
     basic: "Basic Plan",
     pro: "Pro Plan",
     premium: "Premium Plan"
   };
-
   const planPrices = {
     basic: "$129",
     pro: "$249",
@@ -36,12 +33,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const planName = planDisplayNames[plan] || "Basic Plan";
   const priceText = trial ? "Free Trial" : (planPrices[plan] || "$129");
-
   if (summary) {
     summary.textContent = `${planName} – ${priceText}`;
   }
 
-  // ✅ Handle form submission
   const form = document.getElementById("checkoutForm");
   if (form) {
     form.addEventListener("submit", async (e) => {
@@ -49,7 +44,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const fullNameEl = document.getElementById("fullName");
       const emailEl = document.getElementById("email");
-
       const fullName = fullNameEl?.value.trim();
       const email = emailEl?.value.trim();
 
@@ -67,9 +61,24 @@ document.addEventListener("DOMContentLoaded", () => {
           timestamp: serverTimestamp()
         });
 
-        window.location.href = "thankyou.html";
-      } catch (err) {
-        console.error("❌ Firebase error:", err);
+        if (trial) {
+          window.location.href = "thankyou.html";
+        } else {
+          const response = await fetch("/.netlify/functions/create-checkout-session", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ plan })
+          });
+
+          const data = await response.json();
+          if (data.url) {
+            window.location.href = data.url;
+          } else {
+            alert("Unable to redirect to payment page.");
+          }
+        }
+      } catch (error) {
+        console.error("❌ Error:", error);
         alert("Something went wrong. Please try again.");
       }
     });
