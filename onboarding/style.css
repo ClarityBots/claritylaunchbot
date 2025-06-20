@@ -1,4 +1,4 @@
-<!-- Updated style.css -->
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 
 body {
@@ -87,4 +87,13 @@ footer {
   height: 100vh;
   pointer-events: none;
   z-index: 9999;
+}
+
+/* Fade transition effect */
+body {
+  transition: opacity 0.3s ease;
+}
+
+body.fade-out {
+  opacity: 0;
 }

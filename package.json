@@ -1,5 +1,17 @@
 {
+  "name": "claritylaunchbot",
+  "version": "1.0.0",
+  "description": "ClarityLaunchBot frontend project",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
   "dependencies": {
-    "firebase": "^11.9.1"
-  }
+    "vite": "^4.5.0"
+  },
+  "devDependencies": {},
+  "keywords": [],
+  "author": "Kyle Fowles",
+  "license": "MIT"
 }
