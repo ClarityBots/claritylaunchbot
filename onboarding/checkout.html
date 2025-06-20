@@ -3,98 +3,93 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Checkout - ClarityLaunchBot</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Checkout | ClarityLaunchBot</title>
 
-  <!-- Preload fonts and styles -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="preload" href="style.css" as="style">
+  <!-- Fonts & Styles -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 
+  <style>
+    html {
+      background-color: #142233;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #142233;
+      color: white;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    body.fade-in {
+      opacity: 1;
+    }
+
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 4rem 1rem;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .summary {
+      font-size: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    button {
+      background-color: #ff7900;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #f04e23;
+    }
+  </style>
 </head>
-<body class="bg-[#FBEDE2] text-[#142233] font-sans min-h-screen flex flex-col items-center justify-center px-4 py-12">
 
-  <h1 class="text-4xl font-bold text-[#F04E23] mb-4">Checkout</h1>
-  <p class="text-lg mb-8">Confirm your plan and complete setup</p>
+<body>
+  <div class="container">
+    <h1>Checkout</h1>
+    <div class="summary" id="planSummary">Loading...</div>
+    <button id="confirmBtn">Confirm & Launch</button>
+  </div>
 
-  <form id="checkoutForm" class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md">
-    <div class="mb-4">
-      <label class="block text-sm font-medium mb-1" for="firstName">First Name</label>
-      <input type="text" id="firstName" name="firstName" required class="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-[#F04E23]">
-    </div>
-    <div class="mb-4">
-      <label class="block text-sm font-medium mb-1" for="lastName">Last Name</label>
-      <input type="text" id="lastName" name="lastName" required class="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-[#F04E23]">
-    </div>
-    <div class="mb-4">
-      <label class="block text-sm font-medium mb-1" for="email">Email Address</label>
-      <input type="email" id="email" name="email" required class="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-[#F04E23]">
-    </div>
-    <div class="mb-6">
-      <label class="block text-sm font-medium mb-1" for="company">Company Name</label>
-      <input type="text" id="company" name="company" required class="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-[#F04E23]">
-    </div>
-    <button type="submit" class="w-full bg-[#F04E23] hover:bg-[#FF7900] text-white font-bold py-3 px-6 rounded-xl transition-all">
-      Complete Checkout
-    </button>
-  </form>
-
-  <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-    import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyBFPU03g16fanyT-a6wJ5NqRxtCwW-Opsg",
-      authDomain: "claritylaunchbot.firebaseapp.com",
-      projectId: "claritylaunchbot",
-      storageBucket: "claritylaunchbot.firebasestorage.app",
-      messagingSenderId: "558688698630",
-      appId: "1:558688698630:web:67de9a65cfe738bd615e87",
-      measurementId: "G-6TES3TB1LK"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    document.getElementById("checkoutForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      const params = new URLSearchParams(window.location.search);
-      const plan = params.get("plan") || "unknown";
-      const trial = params.get("trial") === "true";
-
-      const firstName = document.getElementById("firstName").value.trim();
-      const lastName = document.getElementById("lastName").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const company = document.getElementById("company").value.trim();
-
-      const userData = {
-        firstName,
-        lastName,
-        email,
-        company,
-        plan,
-        trial,
-        submittedAt: serverTimestamp()
-      };
-
-      try {
-        await addDoc(collection(db, "launchbot_checkouts"), userData);
-        window.location.href = "thankyou.html";
-      } catch (error) {
-        console.error("Error submitting checkout:", error);
-        alert("There was an error. Please try again.");
-      }
-    });
-  </script>
-
-  <!-- Fade-in on load -->
+  <!-- Fade-in -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       document.body.classList.add("fade-in");
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const plan = urlParams.get("plan") || "unknown";
+      const trial = urlParams.get("trial") === "true";
+
+      const summaryText = `You selected the <strong>${plan.toUpperCase()}</strong> plan${trial ? " with a 7-day free trial." : "."}`;
+      document.getElementById("planSummary").innerHTML = summaryText;
+
+      document.getElementById("confirmBtn").addEventListener("click", () => {
+        document.body.classList.remove("fade-in");
+        document.body.classList.add("fade-out");
+        setTimeout(() => {
+          window.location.href = "thankyou.html";
+        }, 300);
+      });
     });
   </script>
-
 </body>
 </html>
