@@ -1,110 +1,80 @@
-<!-- File: pricing.html -->
+<!-- onboarding/pricing.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ClarityLaunchBot | Pricing</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
+  <title>Select Your Plan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      background-color: #f8f8f8;
       margin: 0;
       padding: 2rem;
+      background: #f9f9f9;
+      color: #142233;
+      text-align: center;
     }
-    .container {
-      max-width: 800px;
-      margin: auto;
+    h1 {
+      margin-bottom: 2rem;
     }
     .plans {
       display: flex;
-      justify-content: space-around;
-      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
     }
     .plan {
       background: white;
-      border-radius: 16px;
-      padding: 1.5rem;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-      text-align: center;
-      width: 30%;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+      width: 260px;
     }
-    .plan h3 {
-      color: #142233;
-      font-size: 1.25rem;
+    .plan h2 {
+      font-size: 1.5rem;
     }
-    .plan p {
-      font-size: 1.1rem;
-      margin: 0.5rem 0;
+    .price {
+      margin: 1rem 0;
+      font-size: 1.2rem;
     }
-    .plan button {
-      margin-top: 1rem;
-      padding: 0.75rem;
-      background-color: #f04e23;
+    button {
+      background-color: #F04E23;
       color: white;
-      font-weight: bold;
       border: none;
-      border-radius: 8px;
+      padding: 0.75rem 1.25rem;
+      font-size: 1rem;
+      border-radius: 0.5rem;
       cursor: pointer;
     }
-    .tools {
-      background: white;
-      border-radius: 16px;
-      padding: 1.5rem;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-      margin-bottom: 2rem;
-    }
-    .tools label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-weight: 500;
-    }
-    .tools input {
-      margin-right: 0.5rem;
+    button:hover {
+      background-color: #d9441e;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>Select Your Plan and Tools</h2>
-
-    <div class="tools">
-      <h3>Select ClarityBots:</h3>
-      <label><input type="checkbox" value="SMART Rocks Builder" class="tool-checkbox" /> SMART Rocks Builder</label>
-      <label><input type="checkbox" value="Vision Clarifier" class="tool-checkbox" /> Vision Clarifier</label>
-      <label><input type="checkbox" value="Scorecard Generator" class="tool-checkbox" /> Scorecard Generator</label>
-      <label><input type="checkbox" value="IDS Coach" class="tool-checkbox" /> IDS Coach</label>
+  <h1>Pick Your ClarityLaunchBot Plan</h1>
+  <div class="plans">
+    <div class="plan">
+      <h2>Basic</h2>
+      <p class="price">$49/month</p>
+      <button onclick="selectPlan('basic')">Select Basic</button>
     </div>
-
-    <div class="plans">
-      <div class="plan">
-        <h3>Basic</h3>
-        <p>$129 / month</p>
-        <button onclick="goToCheckout('basic')">Select Basic</button>
-      </div>
-      <div class="plan">
-        <h3>Pro</h3>
-        <p>$249 / month</p>
-        <button onclick="goToCheckout('pro')">Select Pro</button>
-      </div>
-      <div class="plan">
-        <h3>Premium</h3>
-        <p>$399 / month</p>
-        <button onclick="goToCheckout('premium')">Select Premium</button>
-      </div>
+    <div class="plan">
+      <h2>Pro</h2>
+      <p class="price">$99/month</p>
+      <button onclick="selectPlan('pro')">Select Pro</button>
+    </div>
+    <div class="plan">
+      <h2>Premium</h2>
+      <p class="price">$199/month</p>
+      <button onclick="selectPlan('premium')">Select Premium</button>
     </div>
   </div>
 
   <script>
-    function goToCheckout(plan) {
-      const checkboxes = document.querySelectorAll(".tool-checkbox");
-      const selected = [...checkboxes]
-        .filter(cb => cb.checked)
-        .map(cb => encodeURIComponent(cb.value));
-
-      const toolParams = selected.length ? `&tools=${selected.join(",")}` : "";
-      window.location.href = `checkout.html?plan=${plan}${toolParams}`;
+    function selectPlan(plan) {
+      window.location.href = `checkout.html?plan=${plan}&trial=false`;
     }
   </script>
 </body>
