@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ClarityLaunchBot | Checkout</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <title>Checkout – ClarityLaunchBot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
     body {
       font-family: 'Inter', sans-serif;
@@ -13,24 +13,23 @@
       margin: 0;
       padding: 0;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
       min-height: 100vh;
     }
     .container {
       background: white;
-      padding: 2rem;
+      padding: 2.5rem;
       border-radius: 16px;
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
-      width: 100%;
       max-width: 400px;
+      width: 90%;
       text-align: center;
     }
     h2 {
       font-size: 1.75rem;
       color: #142233;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
     }
     input {
       width: 100%;
@@ -51,62 +50,35 @@
       border-radius: 8px;
       font-size: 1rem;
       cursor: pointer;
-      transition: background-color 0.3s ease;
     }
     button:hover {
       background-color: #d9411f;
-    }
-    .loading {
-      font-weight: 600;
-      color: #f04e23;
-      margin-bottom: 1rem;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h2>Complete Your Sign-Up</h2>
-    <div id="loading" class="loading">Loading...</div>
-    <form id="signupForm" style="display:none">
+    <form id="signupForm">
       <input type="text" id="fullName" placeholder="Full Name" required />
       <input type="email" id="email" placeholder="Email Address" required />
-      <button type="submit">Complete Sign Up</button>
+      <button type="submit">Submit</button>
     </form>
   </div>
 
   <script>
-    const form = document.getElementById("signupForm");
-    const loading = document.getElementById("loading");
-
-    window.addEventListener("DOMContentLoaded", () => {
-      loading.style.display = "none";
-      form.style.display = "block";
-    });
-
-    form.addEventListener("submit", async (e) => {
+    document.getElementById("signupForm").addEventListener("submit", function (e) {
       e.preventDefault();
-
       const name = document.getElementById("fullName").value.trim();
       const email = document.getElementById("email").value.trim();
-      const plan = new URLSearchParams(window.location.search).get("plan") || "basic";
 
-      try {
-        const response = await fetch("/.netlify/functions/create-checkout-session", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name, email, plan })
-        });
-
-        const data = await response.json();
-
-        if (data.url) {
-          window.location.href = data.url;
-        } else {
-          alert("Something went wrong: " + (data.message || "Unknown error"));
-        }
-      } catch (err) {
-        alert("Error: " + err.message);
+      if (!name || !email) {
+        alert("Please fill in all fields.");
+        return;
       }
+
+      // Simple redirect (no Firebase, no Stripe)
+      window.location.href = "thankyou.html";
     });
   </script>
 </body>
