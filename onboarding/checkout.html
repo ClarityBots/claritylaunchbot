@@ -1,122 +1,184 @@
+**checkout.html**
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Checkout</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
     body {
-      font-family: 'Inter', sans-serif;
-      background-color: #fbeded;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
+      font-family: sans-serif;
+      text-align: center;
+      background-color: #fbedE2;
+      padding: 2rem;
     }
     .container {
+      max-width: 400px;
+      margin: auto;
       background: white;
       padding: 2rem;
-      border-radius: 1rem;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      width: 90%;
-      max-width: 400px;
-      text-align: center;
+      border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
     input {
       width: 100%;
       padding: 0.75rem;
-      margin: 0.5rem 0 1rem;
-      font-size: 1rem;
+      margin: 0.5rem 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
     }
     button {
-      background: #ff7900;
-      color: white;
       padding: 1rem;
+      background-color: #F04E23;
+      color: white;
       border: none;
-      border-radius: 0.75rem;
-      font-size: 1rem;
-      font-weight: 600;
+      border-radius: 10px;
       cursor: pointer;
-    }
-    .price-tag {
-      margin-top: 1rem;
+      width: 100%;
       font-weight: bold;
-      color: #f04e23;
     }
     .loading {
+      color: #F04E23;
       font-weight: bold;
-      color: #f04e23;
-      margin: 0.5rem 0;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>Complete Your Sign-Up</h2>
+    <h1>Complete Your Sign-Up</h1>
     <div id="loading" class="loading">Loading...</div>
-
-    <input type="text" id="name" placeholder="Full Name" />
-    <input type="email" id="email" placeholder="Email Address" />
-    <button id="signupBtn">Complete Sign Up</button>
-    <div class="price-tag" id="priceDisplay"></div>
+    <form id="checkout-form" style="display:none">
+      <label>Full Name</label>
+      <input type="text" id="name" required />
+      <label>Email Address</label>
+      <input type="email" id="email" required />
+      <button type="submit">Complete Sign Up</button>
+    </form>
   </div>
 
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const params = new URLSearchParams(window.location.search);
-      const plan = params.get("plan");
-      const trial = params.get("trial") === "true";
-      const priceDisplay = document.getElementById("priceDisplay");
-      const loadingDiv = document.getElementById("loading");
+    const form = document.getElementById('checkout-form');
+    const loading = document.getElementById('loading');
 
-      const pricing = {
-        basic: 49,
-        pro: 249,
-        premium: 499
-      };
+    const urlParams = new URLSearchParams(window.location.search);
+    const plan = urlParams.get('plan');
+    const trial = urlParams.get('trial');
 
-      if (!plan || !pricing[plan]) {
-        priceDisplay.textContent = "Unknown plan selected.";
-      } else {
-        if (trial) {
-          priceDisplay.textContent = `${plan.charAt(0).toUpperCase() + plan.slice(1)} Plan – Free Trial`;
-        } else {
-          priceDisplay.textContent = `${plan.charAt(0).toUpperCase() + plan.slice(1)} Plan – $${pricing[plan]}`;
-        }
-      }
+    if (plan) {
+      loading.style.display = 'none';
+      form.style.display = 'block';
+    } else {
+      loading.innerText = 'Invalid plan.';
+    }
 
-      loadingDiv.style.display = "none";
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      loading.innerText = 'Redirecting...';
+      loading.style.display = 'block';
+      form.style.display = 'none';
 
-      document.getElementById("signupBtn").addEventListener("click", async () => {
-        const fullName = document.getElementById("name").value.trim();
-        const email = document.getElementById("email").value.trim();
-
-        if (!fullName || !email) {
-          alert("Please enter your name and email.");
-          return;
-        }
-
-        try {
-          const response = await fetch("/.netlify/functions/create-checkout-session", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name: fullName, email, plan, trial })
-          });
-
-          const data = await response.json();
-
-          if (data.url) {
-            window.location.href = data.url;
-          } else {
-            alert("Checkout session failed. Please try again.");
-          }
-        } catch (err) {
-          alert("Something went wrong. Please try again.");
-        }
+      const res = await fetch('/.netlify/functions/create-checkout-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: document.getElementById('name').value,
+          email: document.getElementById('email').value,
+          plan,
+          trial
+        })
       });
+
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        alert(data.message || 'Checkout failed. Please try again.');
+        loading.style.display = 'none';
+        form.style.display = 'block';
+      }
     });
   </script>
 </body>
 </html>
+```
+
+
+**netlify/functions/create-checkout-session.js**
+
+```js
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+
+const priceMap = {
+  basic: 'price_XXX',
+  pro: 'price_YYY',
+  premium: 'price_ZZZ'
+};
+
+exports.handler = async (event) => {
+  if (event.httpMethod !== 'POST') {
+    return {
+      statusCode: 405,
+      body: JSON.stringify({ message: 'Method Not Allowed' })
+    };
+  }
+
+  try {
+    const { name, email, plan } = JSON.parse(event.body);
+
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      mode: 'payment',
+      customer_email: email,
+      line_items: [{ price: priceMap[plan], quantity: 1 }],
+      success_url: 'https://claritylaunchbot-pro.netlify.app/onboarding/thankyou.html',
+      cancel_url: 'https://claritylaunchbot-pro.netlify.app/onboarding/checkout.html?plan=' + plan
+    });
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ url: session.url })
+    };
+  } catch (err) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ message: err.message })
+    };
+  }
+};
+```
+
+
+**netlify.toml**
+
+```toml
+[build]
+  functions = "netlify/functions"
+  publish = "public"
+
+[functions]
+  node_bundler = "esbuild"
+```
+
+
+**package.json**
+
+```json
+{
+  "name": "claritylaunchbot",
+  "version": "1.0.0",
+  "dependencies": {
+    "stripe": "^12.0.0"
+  }
+}
+```
+
+---
+
+### ✅ Final Notes
+- Replace the `price_XXX`, `price_YYY`, `price_ZZZ` in `create-checkout-session.js` with your **real Stripe Price IDs**.
+- Set your **`STRIPE_SECRET_KEY`** in Netlify’s environment variables.
+- Push these files via Git, and Netlify will deploy and bundle the function.
+
+Let me know the moment it's deployed, and we’ll test the button together.
