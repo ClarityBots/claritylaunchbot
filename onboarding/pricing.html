@@ -1,150 +1,111 @@
-<!-- File: onboarding/pricing.html -->
+<!-- File: pricing.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Choose Your Plan – ClarityLaunchBot</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <title>ClarityLaunchBot | Pricing</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
   <style>
     body {
       font-family: 'Inter', sans-serif;
+      background-color: #f8f8f8;
       margin: 0;
       padding: 2rem;
-      background-color: #f8f8f8;
     }
-    h1 {
-      text-align: center;
-      color: #142233;
-      margin-bottom: 2rem;
+    .container {
+      max-width: 800px;
+      margin: auto;
     }
     .plans {
       display: flex;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-      justify-content: center;
+      justify-content: space-around;
+      margin-bottom: 2rem;
     }
-    .card {
+    .plan {
       background: white;
-      padding: 2rem;
       border-radius: 16px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
-      width: 300px;
+      padding: 1.5rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
       text-align: center;
+      width: 30%;
     }
-    .card h2 {
-      margin-bottom: 0.5rem;
-      font-size: 1.5rem;
+    .plan h3 {
       color: #142233;
-    }
-    .price {
       font-size: 1.25rem;
-      margin: 0.5rem 0 1rem;
-      color: #f04e23;
     }
-    .features, .tools {
-      text-align: left;
-      margin-bottom: 1rem;
-      padding-left: 0;
-      list-style: none;
+    .plan p {
+      font-size: 1.1rem;
+      margin: 0.5rem 0;
     }
-    .features li::before {
-      content: "✓";
-      color: #f04e23;
-      margin-right: 0.5rem;
+    .plan button {
+      margin-top: 1rem;
+      padding: 0.75rem;
+      background-color: #f04e23;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .tools {
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+      margin-bottom: 2rem;
     }
     .tools label {
       display: block;
       margin-bottom: 0.5rem;
-      font-size: 0.95rem;
+      font-weight: 500;
     }
-    .button {
-      background-color: #f04e23;
-      color: white;
-      font-weight: 600;
-      padding: 0.75rem 1.25rem;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-block;
-      margin-top: 1rem;
-    }
-    .button:hover {
-      background-color: #d9411f;
+    .tools input {
+      margin-right: 0.5rem;
     }
   </style>
 </head>
 <body>
-  <h1>Select Your Plan</h1>
-  <div class="plans">
-    <!-- Plan Card Template -->
-    <div class="card" data-plan="basic">
-      <h2>Basic</h2>
-      <div class="price">$129</div>
-      <ul class="features">
-        <li>1 AI-assisted tool</li>
-        <li>Email support</li>
-        <li>Quick start setup</li>
-      </ul>
-      <div class="tools">
-        <label><input type="checkbox" value="smart-rocks" /> SMART Rocks</label>
-        <label><input type="checkbox" value="vision-builder" /> Vision Builder</label>
-        <label><input type="checkbox" value="scorecard-tracker" /> Scorecard Tracker</label>
-      </div>
-      <button class="button select-plan">Select Basic</button>
+  <div class="container">
+    <h2>Select Your Plan and Tools</h2>
+
+    <div class="tools">
+      <h3>Select ClarityBots:</h3>
+      <label><input type="checkbox" value="SMART Rocks Builder" class="tool-checkbox" /> SMART Rocks Builder</label>
+      <label><input type="checkbox" value="Vision Clarifier" class="tool-checkbox" /> Vision Clarifier</label>
+      <label><input type="checkbox" value="Scorecard Generator" class="tool-checkbox" /> Scorecard Generator</label>
+      <label><input type="checkbox" value="IDS Coach" class="tool-checkbox" /> IDS Coach</label>
     </div>
 
-    <div class="card" data-plan="pro">
-      <h2>Pro</h2>
-      <div class="price">$249</div>
-      <ul class="features">
-        <li>3 AI-assisted tools</li>
-        <li>Priority support</li>
-        <li>Custom onboarding</li>
-      </ul>
-      <div class="tools">
-        <label><input type="checkbox" value="smart-rocks" /> SMART Rocks</label>
-        <label><input type="checkbox" value="vision-builder" /> Vision Builder</label>
-        <label><input type="checkbox" value="scorecard-tracker" /> Scorecard Tracker</label>
-        <label><input type="checkbox" value="ids-bot" /> IDS Bot</label>
+    <div class="plans">
+      <div class="plan">
+        <h3>Basic</h3>
+        <p>$129 / month</p>
+        <button onclick="goToCheckout('basic')">Select Basic</button>
       </div>
-      <button class="button select-plan">Select Pro</button>
-    </div>
-
-    <div class="card" data-plan="premium">
-      <h2>Premium</h2>
-      <div class="price">$399</div>
-      <ul class="features">
-        <li>All AI tools included</li>
-        <li>Dedicated expert coach</li>
-        <li>Personalized automation</li>
-      </ul>
-      <div class="tools">
-        <label><input type="checkbox" value="smart-rocks" /> SMART Rocks</label>
-        <label><input type="checkbox" value="vision-builder" /> Vision Builder</label>
-        <label><input type="checkbox" value="scorecard-tracker" /> Scorecard Tracker</label>
-        <label><input type="checkbox" value="ids-bot" /> IDS Bot</label>
-        <label><input type="checkbox" value="quarterly-planner" /> Quarterly Planner</label>
+      <div class="plan">
+        <h3>Pro</h3>
+        <p>$249 / month</p>
+        <button onclick="goToCheckout('pro')">Select Pro</button>
       </div>
-      <button class="button select-plan">Select Premium</button>
+      <div class="plan">
+        <h3>Premium</h3>
+        <p>$399 / month</p>
+        <button onclick="goToCheckout('premium')">Select Premium</button>
+      </div>
     </div>
   </div>
 
   <script>
-    document.querySelectorAll(".select-plan").forEach(button => {
-      button.addEventListener("click", () => {
-        const card = button.closest(".card");
-        const plan = card.dataset.plan;
-        const tools = [...card.querySelectorAll("input[type='checkbox']:checked")]
-          .map(cb => cb.value)
-          .join(",");
+    function goToCheckout(plan) {
+      const checkboxes = document.querySelectorAll(".tool-checkbox");
+      const selected = [...checkboxes]
+        .filter(cb => cb.checked)
+        .map(cb => encodeURIComponent(cb.value));
 
-        const url = `checkout.html?plan=${plan}&tools=${encodeURIComponent(tools)}`;
-        window.location.href = url;
-      });
-    });
+      const toolParams = selected.length ? `&tools=${selected.join(",")}` : "";
+      window.location.href = `checkout.html?plan=${plan}${toolParams}`;
+    }
   </script>
 </body>
 </html>

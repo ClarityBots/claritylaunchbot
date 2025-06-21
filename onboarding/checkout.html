@@ -1,84 +1,86 @@
-<!-- File: onboarding/checkout.html -->
+<!-- File: checkout.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Checkout – ClarityLaunchBot</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <title>ClarityLaunchBot | Checkout</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
   <style>
     body {
       font-family: 'Inter', sans-serif;
       background-color: #f8f8f8;
       margin: 0;
-      padding: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
+      padding: 2rem;
     }
     .container {
+      max-width: 600px;
+      margin: auto;
       background: white;
-      padding: 2.5rem;
       border-radius: 16px;
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
-      max-width: 400px;
-      width: 90%;
-      text-align: center;
+      padding: 2rem;
     }
     h2 {
-      font-size: 1.75rem;
       color: #142233;
       margin-bottom: 1rem;
     }
-    input {
-      width: 100%;
-      padding: 0.75rem;
-      margin: 0.5rem 0;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 1rem;
+    .section {
+      margin-bottom: 1.5rem;
     }
-    button {
-      width: 100%;
-      padding: 0.9rem;
-      margin-top: 1rem;
-      background-color: #f04e23;
-      color: white;
-      font-weight: 600;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      cursor: pointer;
+    .tool-list {
+      list-style: none;
+      padding-left: 1rem;
     }
-    button:hover {
-      background-color: #d9411f;
+    .tool-list li {
+      margin: 0.25rem 0;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>Complete Your Sign-Up</h2>
-    <form id="signupForm">
-      <input type="text" id="fullName" placeholder="Full Name" required />
-      <input type="email" id="email" placeholder="Email Address" required />
-      <button type="submit">Submit</button>
-    </form>
+    <h2>Confirm Your Details</h2>
+    
+    <div class="section">
+      <strong>Plan Selected:</strong>
+      <p id="selectedPlan">Loading...</p>
+    </div>
+
+    <div class="section">
+      <strong>ClarityBots Selected:</strong>
+      <ul id="selectedTools" class="tool-list"></ul>
+    </div>
+
+    <div class="section">
+      <form id="checkoutForm">
+        <input type="text" id="fullName" placeholder="Full Name" required style="width:100%; padding:0.5rem; margin-bottom:1rem;" />
+        <input type="email" id="email" placeholder="Email Address" required style="width:100%; padding:0.5rem;" />
+        <button type="submit" style="margin-top:1rem; padding:0.75rem; width:100%; background-color:#f04e23; color:white; border:none; border-radius:8px; font-weight:bold;">Complete Sign Up</button>
+      </form>
+    </div>
   </div>
 
   <script>
-    document.getElementById("signupForm").addEventListener("submit", function (e) {
+    const params = new URLSearchParams(window.location.search);
+    const plan = params.get("plan") || "basic";
+    const tools = params.get("tools")?.split(",").filter(t => t) || [];
+
+    document.getElementById("selectedPlan").textContent = plan.charAt(0).toUpperCase() + plan.slice(1);
+
+    const toolList = document.getElementById("selectedTools");
+    if (tools.length === 0) {
+      toolList.innerHTML = "<li><em>No tools selected</em></li>";
+    } else {
+      tools.forEach(tool => {
+        const li = document.createElement("li");
+        li.textContent = tool;
+        toolList.appendChild(li);
+      });
+    }
+
+    document.getElementById("checkoutForm").addEventListener("submit", (e) => {
       e.preventDefault();
-      const name = document.getElementById("fullName").value.trim();
-      const email = document.getElementById("email").value.trim();
-
-      if (!name || !email) {
-        alert("Please fill in all fields.");
-        return;
-      }
-
-      // Simple redirect (no Firebase, no Stripe)
-      window.location.href = "thankyou.html";
+      alert("Signup submitted! (Functionality coming soon.)");
     });
   </script>
 </body>
