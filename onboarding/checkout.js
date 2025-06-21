@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const fullNameInput = document.getElementById("fullName");
   const emailInput = document.getElementById("email");
-  const submitBtn = document.getElementById("submitBtn");
+  const form = document.getElementById("checkoutForm");
   const planSummary = document.getElementById("planSummary");
 
   // Map plan IDs to Stripe price IDs
@@ -30,7 +30,9 @@ document.addEventListener("DOMContentLoaded", () => {
     planSummary.textContent = priceLabels[planId] || "";
   }
 
-  submitBtn.addEventListener("click", async () => {
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
     const fullName = fullNameInput.value.trim();
     const email = emailInput.value.trim();
 
