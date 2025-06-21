@@ -42,9 +42,9 @@
       margin: 0.5rem 0 1rem;
       color: #f04e23;
     }
-    .features {
+    .features, .tools {
       text-align: left;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
       padding-left: 0;
       list-style: none;
     }
@@ -52,6 +52,11 @@
       content: "✓";
       color: #f04e23;
       margin-right: 0.5rem;
+    }
+    .tools label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
     }
     .button {
       background-color: #f04e23;
@@ -64,6 +69,7 @@
       cursor: pointer;
       text-decoration: none;
       display: inline-block;
+      margin-top: 1rem;
     }
     .button:hover {
       background-color: #d9411f;
@@ -73,7 +79,8 @@
 <body>
   <h1>Select Your Plan</h1>
   <div class="plans">
-    <div class="card">
+    <!-- Plan Card Template -->
+    <div class="card" data-plan="basic">
       <h2>Basic</h2>
       <div class="price">$129</div>
       <ul class="features">
@@ -81,9 +88,15 @@
         <li>Email support</li>
         <li>Quick start setup</li>
       </ul>
-      <a href="checkout.html?plan=basic" class="button">Select Basic</a>
+      <div class="tools">
+        <label><input type="checkbox" value="smart-rocks" /> SMART Rocks</label>
+        <label><input type="checkbox" value="vision-builder" /> Vision Builder</label>
+        <label><input type="checkbox" value="scorecard-tracker" /> Scorecard Tracker</label>
+      </div>
+      <button class="button select-plan">Select Basic</button>
     </div>
-    <div class="card">
+
+    <div class="card" data-plan="pro">
       <h2>Pro</h2>
       <div class="price">$249</div>
       <ul class="features">
@@ -91,9 +104,16 @@
         <li>Priority support</li>
         <li>Custom onboarding</li>
       </ul>
-      <a href="checkout.html?plan=pro" class="button">Select Pro</a>
+      <div class="tools">
+        <label><input type="checkbox" value="smart-rocks" /> SMART Rocks</label>
+        <label><input type="checkbox" value="vision-builder" /> Vision Builder</label>
+        <label><input type="checkbox" value="scorecard-tracker" /> Scorecard Tracker</label>
+        <label><input type="checkbox" value="ids-bot" /> IDS Bot</label>
+      </div>
+      <button class="button select-plan">Select Pro</button>
     </div>
-    <div class="card">
+
+    <div class="card" data-plan="premium">
       <h2>Premium</h2>
       <div class="price">$399</div>
       <ul class="features">
@@ -101,8 +121,30 @@
         <li>Dedicated expert coach</li>
         <li>Personalized automation</li>
       </ul>
-      <a href="checkout.html?plan=premium" class="button">Select Premium</a>
+      <div class="tools">
+        <label><input type="checkbox" value="smart-rocks" /> SMART Rocks</label>
+        <label><input type="checkbox" value="vision-builder" /> Vision Builder</label>
+        <label><input type="checkbox" value="scorecard-tracker" /> Scorecard Tracker</label>
+        <label><input type="checkbox" value="ids-bot" /> IDS Bot</label>
+        <label><input type="checkbox" value="quarterly-planner" /> Quarterly Planner</label>
+      </div>
+      <button class="button select-plan">Select Premium</button>
     </div>
   </div>
+
+  <script>
+    document.querySelectorAll(".select-plan").forEach(button => {
+      button.addEventListener("click", () => {
+        const card = button.closest(".card");
+        const plan = card.dataset.plan;
+        const tools = [...card.querySelectorAll("input[type='checkbox']:checked")]
+          .map(cb => cb.value)
+          .join(",");
+
+        const url = `checkout.html?plan=${plan}&tools=${encodeURIComponent(tools)}`;
+        window.location.href = url;
+      });
+    });
+  </script>
 </body>
 </html>
