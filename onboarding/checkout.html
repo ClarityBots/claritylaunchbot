@@ -1,26 +1,36 @@
-**checkout.html**
-
-```html
+<!-- File: checkout.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Checkout</title>
+  <title>ClarityLaunchBot | Checkout</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
   <style>
     body {
-      font-family: sans-serif;
-      text-align: center;
-      background-color: #fbedE2;
-      padding: 2rem;
+      font-family: 'Inter', sans-serif;
+      background-color: #f8f8f8;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
     }
     .container {
-      max-width: 400px;
-      margin: auto;
       background: white;
       padding: 2rem;
       border-radius: 16px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+    h2 {
+      font-size: 1.75rem;
+      color: #142233;
+      margin-bottom: 1.5rem;
     }
     input {
       width: 100%;
@@ -28,157 +38,76 @@
       margin: 0.5rem 0;
       border-radius: 8px;
       border: 1px solid #ccc;
+      font-size: 1rem;
     }
     button {
-      padding: 1rem;
-      background-color: #F04E23;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
       width: 100%;
-      font-weight: bold;
+      padding: 0.9rem;
+      margin-top: 1rem;
+      background-color: #f04e23;
+      color: white;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #d9411f;
     }
     .loading {
-      color: #F04E23;
-      font-weight: bold;
+      font-weight: 600;
+      color: #f04e23;
+      margin-bottom: 1rem;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Complete Your Sign-Up</h1>
+    <h2>Complete Your Sign-Up</h2>
     <div id="loading" class="loading">Loading...</div>
-    <form id="checkout-form" style="display:none">
-      <label>Full Name</label>
-      <input type="text" id="name" required />
-      <label>Email Address</label>
-      <input type="email" id="email" required />
+    <form id="signupForm" style="display:none">
+      <input type="text" id="fullName" placeholder="Full Name" required />
+      <input type="email" id="email" placeholder="Email Address" required />
       <button type="submit">Complete Sign Up</button>
     </form>
   </div>
 
   <script>
-    const form = document.getElementById('checkout-form');
-    const loading = document.getElementById('loading');
+    const form = document.getElementById("signupForm");
+    const loading = document.getElementById("loading");
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const plan = urlParams.get('plan');
-    const trial = urlParams.get('trial');
+    window.addEventListener("DOMContentLoaded", () => {
+      loading.style.display = "none";
+      form.style.display = "block";
+    });
 
-    if (plan) {
-      loading.style.display = 'none';
-      form.style.display = 'block';
-    } else {
-      loading.innerText = 'Invalid plan.';
-    }
-
-    form.addEventListener('submit', async (e) => {
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      loading.innerText = 'Redirecting...';
-      loading.style.display = 'block';
-      form.style.display = 'none';
 
-      const res = await fetch('/.netlify/functions/create-checkout-session', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: document.getElementById('name').value,
-          email: document.getElementById('email').value,
-          plan,
-          trial
-        })
-      });
+      const name = document.getElementById("fullName").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const plan = new URLSearchParams(window.location.search).get("plan") || "basic";
 
-      const data = await res.json();
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        alert(data.message || 'Checkout failed. Please try again.');
-        loading.style.display = 'none';
-        form.style.display = 'block';
+      try {
+        const response = await fetch("/.netlify/functions/create-checkout-session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email, plan })
+        });
+
+        const data = await response.json();
+
+        if (data.url) {
+          window.location.href = data.url;
+        } else {
+          alert("Something went wrong: " + (data.message || "Unknown error"));
+        }
+      } catch (err) {
+        alert("Error: " + err.message);
       }
     });
   </script>
 </body>
 </html>
-```
-
-
-**netlify/functions/create-checkout-session.js**
-
-```js
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-
-const priceMap = {
-  basic: 'price_XXX',
-  pro: 'price_YYY',
-  premium: 'price_ZZZ'
-};
-
-exports.handler = async (event) => {
-  if (event.httpMethod !== 'POST') {
-    return {
-      statusCode: 405,
-      body: JSON.stringify({ message: 'Method Not Allowed' })
-    };
-  }
-
-  try {
-    const { name, email, plan } = JSON.parse(event.body);
-
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      mode: 'payment',
-      customer_email: email,
-      line_items: [{ price: priceMap[plan], quantity: 1 }],
-      success_url: 'https://claritylaunchbot-pro.netlify.app/onboarding/thankyou.html',
-      cancel_url: 'https://claritylaunchbot-pro.netlify.app/onboarding/checkout.html?plan=' + plan
-    });
-
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ url: session.url })
-    };
-  } catch (err) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ message: err.message })
-    };
-  }
-};
-```
-
-
-**netlify.toml**
-
-```toml
-[build]
-  functions = "netlify/functions"
-  publish = "public"
-
-[functions]
-  node_bundler = "esbuild"
-```
-
-
-**package.json**
-
-```json
-{
-  "name": "claritylaunchbot",
-  "version": "1.0.0",
-  "dependencies": {
-    "stripe": "^12.0.0"
-  }
-}
-```
-
----
-
-### ✅ Final Notes
-- Replace the `price_XXX`, `price_YYY`, `price_ZZZ` in `create-checkout-session.js` with your **real Stripe Price IDs**.
-- Set your **`STRIPE_SECRET_KEY`** in Netlify’s environment variables.
-- Push these files via Git, and Netlify will deploy and bundle the function.
-
-Let me know the moment it's deployed, and we’ll test the button together.

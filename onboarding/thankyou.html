@@ -1,3 +1,4 @@
+<!-- File: thankyou.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,64 +8,75 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
     body {
-      margin: 0;
-      padding: 2rem;
       font-family: 'Inter', sans-serif;
-      background: linear-gradient(to bottom right, #FBEDE2, #E5E8EB);
-      color: #142233;
-      min-height: 100vh;
+      background-color: #f8f8f8;
+      margin: 0;
+      padding: 0;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      text-align: center;
+      height: 100vh;
+      overflow: hidden;
     }
 
-    .card {
-      background-color: #fff;
-      padding: 2rem 2.5rem;
+    .container {
+      background: white;
+      padding: 2.5rem;
       border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-      max-width: 480px;
-      width: 100%;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+      text-align: center;
+      max-width: 500px;
     }
 
     h1 {
       font-size: 2rem;
+      color: #142233;
       margin-bottom: 1rem;
-      color: #F04E23;
     }
 
     p {
-      font-size: 1.1rem;
-      color: #445777;
-      margin-bottom: 0;
+      font-size: 1rem;
+      color: #555;
     }
 
-    footer {
-      margin-top: 3rem;
-      font-size: 0.9rem;
-      color: #888;
+    .confetti {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>🎉 Thank You!</h1>
-    <p>Your onboarding is complete and you're all set.</p>
+  <div class="confetti" id="confetti"></div>
+  <div class="container">
+    <h1>You're all set! 🎉</h1>
+    <p>Thank you for signing up. We'll be in touch soon with next steps.</p>
   </div>
 
-  <footer>Powered by Business Intuition Incorporated</footer>
-
-  <!-- Confetti animation -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script>
-    // Fire confetti on page load
-    confetti({
-      particleCount: 120,
-      spread: 80,
-      origin: { y: 0.6 }
-    });
+    // Confetti blast
+    const duration = 2 * 1000;
+    const animationEnd = Date.now() + duration;
+    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+    const interval = setInterval(() => {
+      const timeLeft = animationEnd - Date.now();
+
+      if (timeLeft <= 0) {
+        return clearInterval(interval);
+      }
+
+      const particleCount = 50 * (timeLeft / duration);
+      confetti(Object.assign({}, defaults, {
+        particleCount,
+        origin: { x: Math.random(), y: Math.random() - 0.2 }
+      }));
+    }, 250);
   </script>
 </body>
 </html>

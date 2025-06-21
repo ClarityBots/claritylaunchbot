@@ -1,121 +1,141 @@
+<!-- File: pricing.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Select a Plan</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <title>ClarityLaunchBot | Choose Your Plan</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" />
   <style>
     body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f8f8f8;
       margin: 0;
       padding: 2rem;
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(to bottom right, #FBEDE2, #E5E8EB);
-      color: #142233;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      opacity: 0;
-      transition: opacity 0.3s ease-in;
     }
-    body.fade-in {
-      opacity: 1;
-    }
+
     h1 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
+      text-align: center;
+      color: #142233;
+      margin-bottom: 2rem;
     }
+
     .plans {
-      display: flex;
-      gap: 1.5rem;
-      margin-top: 1.5rem;
-      flex-wrap: wrap;
-      justify-content: center;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
     }
+
     .plan {
-      background-color: #fff;
-      border-radius: 12px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-      padding: 1.5rem 2rem;
-      width: 250px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+      padding: 2rem;
+      text-align: center;
+      transition: transform 0.2s;
     }
+
+    .plan:hover {
+      transform: translateY(-5px);
+    }
+
     .plan h2 {
-      margin-bottom: 0.5rem;
-      color: #F04E23;
+      font-size: 1.5rem;
+      color: #142233;
     }
+
     .price {
       font-size: 1.25rem;
-      font-weight: 600;
-      margin-bottom: 1rem;
+      color: #f04e23;
+      margin: 1rem 0;
     }
-    .plan button {
-      background-color: #FF7900;
-      color: #fff;
+
+    .features {
+      font-size: 0.95rem;
+      color: #555;
+      margin-bottom: 1.5rem;
+    }
+
+    button {
+      background-color: #f04e23;
+      color: white;
       border: none;
-      padding: 0.5rem 1rem;
+      padding: 0.8rem 1.5rem;
       border-radius: 8px;
+      font-size: 1rem;
       font-weight: 600;
       cursor: pointer;
+      transition: background-color 0.3s ease;
     }
+
+    button:hover {
+      background-color: #d9411f;
+    }
+
     .trial-toggle {
-      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 2rem 0 3rem;
+      gap: 0.5rem;
+      font-size: 1rem;
     }
   </style>
 </head>
 <body>
-  <h1>Select Your Plan</h1>
+  <h1>Choose Your Plan</h1>
 
-  <label class="trial-toggle">
+  <div class="trial-toggle">
     <input type="checkbox" id="trialToggle" />
-    Start with a free trial
-  </label>
+    <label for="trialToggle">Activate Free Trial</label>
+  </div>
 
   <div class="plans">
     <div class="plan">
       <h2>Basic</h2>
       <div class="price" id="price-basic">$129</div>
-      <button onclick="selectPlan('basic')">Select Basic</button>
+      <div class="features">Great for solopreneurs and small teams.</div>
+      <button onclick="selectPlan('basic')">Select</button>
     </div>
     <div class="plan">
       <h2>Pro</h2>
       <div class="price" id="price-pro">$249</div>
-      <button onclick="selectPlan('pro')">Select Pro</button>
+      <div class="features">Perfect for growing leadership teams.</div>
+      <button onclick="selectPlan('pro')">Select</button>
     </div>
     <div class="plan">
       <h2>Premium</h2>
       <div class="price" id="price-premium">$399</div>
-      <button onclick="selectPlan('premium')">Select Premium</button>
+      <div class="features">Built for multi-team scale and complexity.</div>
+      <button onclick="selectPlan('premium')">Select</button>
     </div>
   </div>
 
   <script>
-    const planPrices = {
+    const prices = {
       basic: "$129",
       pro: "$249",
-      premium: "$399"
+      premium: "$399",
     };
 
-    function updatePrices(isTrial) {
-      document.getElementById("price-basic").textContent = isTrial ? "Free Trial" : planPrices.basic;
-      document.getElementById("price-pro").textContent = isTrial ? "Free Trial" : planPrices.pro;
-      document.getElementById("price-premium").textContent = isTrial ? "Free Trial" : planPrices.premium;
+    const trialToggle = document.getElementById("trialToggle");
+
+    function updatePrices() {
+      const trial = trialToggle.checked;
+      document.getElementById("price-basic").textContent = trial ? "Free Trial" : prices.basic;
+      document.getElementById("price-pro").textContent = trial ? "Free Trial" : prices.pro;
+      document.getElementById("price-premium").textContent = trial ? "Free Trial" : prices.premium;
     }
 
     function selectPlan(plan) {
-      const isTrial = document.getElementById("trialToggle").checked;
-      window.location.href = `checkout.html?plan=${plan}&trial=${isTrial}`;
+      const trial = trialToggle.checked;
+      const url = `checkout.html?plan=${plan}&trial=${trial}`;
+      window.location.href = url;
     }
 
-    document.getElementById("trialToggle").addEventListener("change", (e) => {
-      updatePrices(e.target.checked);
-    });
-
-    window.addEventListener("DOMContentLoaded", () => {
-      document.body.classList.add("fade-in");
-    });
+    trialToggle.addEventListener("change", updatePrices);
   </script>
 </body>
 </html>
