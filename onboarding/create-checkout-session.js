@@ -1,48 +1,52 @@
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 exports.handler = async (event) => {
-  if (event.httpMethod !== 'POST') {
+  if (event.httpMethod !== "POST") {
     return {
       statusCode: 405,
-      body: JSON.stringify({ error: 'Method Not Allowed' }),
+      body: JSON.stringify({ message: "Method Not Allowed" }),
     };
   }
 
   try {
-    const { fullName, email, planId } = JSON.parse(event.body);
+    const { name, email, plan, trial } = JSON.parse(event.body);
 
-    if (!planId || !email || !fullName) {
-      console.error("❌ Missing required fields:", { planId, email, fullName });
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ error: 'Missing required fields' }),
-      };
-    }
+    // Stripe Price IDs
+    const prices = {
+      basic: "price_1RcAt5Fp6CIVhceoKnjn5Ykv",
+      pro: "price_1RcAttFp6CIVhceod7MbDVNf",
+      premium: "price_1RcAuFFp6CIVhceof1teHR7d",
+    };
+
+    const priceId = prices[plan] || prices.basic;
 
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      customer_email: email,
+      mode: "subscription",
+      payment_method_types: ["card"],
       line_items: [
         {
-          price: planId,
+          price: priceId,
           quantity: 1,
         },
       ],
-      mode: 'payment',
-      success_url: `${process.env.URL}/thankyou.html`,
-      cancel_url: `${process.env.URL}/checkout.html`,
-      metadata: { fullName },
+      customer_email: email,
+      subscription_data: {
+        metadata: { name, plan },
+        trial_period_days: trial ? 14 : undefined,
+      },
+      success_url: "https://claritylaunchbot-pro.netlify.app/onboarding/thankyou.html",
+      cancel_url: "https://claritylaunchbot-pro.netlify.app/onboarding/pricing.html",
     });
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ id: session.id }),
+      body: JSON.stringify({ url: session.url }),
     };
-  } catch (error) {
-    console.error("❌ Stripe error:", error);
+  } catch (err) {
+    console.error("Stripe error:", err);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'Stripe checkout session failed' }),
+      body: JSON.stringify({ message: "Checkout session failed. Please try again." }),
     };
   }
 };
