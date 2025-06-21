@@ -1,74 +1,98 @@
-<!-- onboarding/pricing.html -->
+<!-- File: onboarding/pricing.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Select Your Plan</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Select Your Plan | ClarityLaunchBot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --navy: #142233;
+      --orange: #F04E23;
+      --gray: #E5E8EB;
+    }
+
     body {
+      background-color: var(--navy);
       font-family: 'Inter', sans-serif;
       margin: 0;
       padding: 2rem;
-      background: #f9f9f9;
-      color: #142233;
-      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
     }
+
     h1 {
+      color: white;
+      font-size: 2rem;
+      font-weight: 600;
       margin-bottom: 2rem;
     }
+
     .plans {
       display: flex;
       flex-wrap: wrap;
-      justify-content: center;
       gap: 2rem;
+      justify-content: center;
     }
+
     .plan {
       background: white;
-      padding: 2rem;
       border-radius: 1rem;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
       width: 260px;
+      text-align: center;
     }
+
     .plan h2 {
       font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--navy);
     }
-    .price {
-      margin: 1rem 0;
-      font-size: 1.2rem;
+
+    .plan .price {
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+      color: #333;
     }
-    button {
-      background-color: #F04E23;
+
+    .plan button {
+      background-color: var(--orange);
       color: white;
       border: none;
       padding: 0.75rem 1.25rem;
       font-size: 1rem;
+      font-weight: 600;
       border-radius: 0.5rem;
       cursor: pointer;
+      transition: background-color 0.2s ease-in-out;
     }
-    button:hover {
-      background-color: #d9441e;
+
+    .plan button:hover {
+      background-color: #d9431e;
     }
   </style>
 </head>
 <body>
-  <h1>Pick Your ClarityLaunchBot Plan</h1>
+  <h1>Select Your Plan</h1>
   <div class="plans">
     <div class="plan">
       <h2>Basic</h2>
-      <p class="price">$49/month</p>
-      <button onclick="selectPlan('basic')">Select Basic</button>
+      <p class="price">$49/mo</p>
+      <button onclick="selectPlan('basic')">Choose Basic</button>
     </div>
     <div class="plan">
       <h2>Pro</h2>
-      <p class="price">$99/month</p>
-      <button onclick="selectPlan('pro')">Select Pro</button>
+      <p class="price">$99/mo</p>
+      <button onclick="selectPlan('pro')">Choose Pro</button>
     </div>
     <div class="plan">
       <h2>Premium</h2>
-      <p class="price">$199/month</p>
-      <button onclick="selectPlan('premium')">Select Premium</button>
+      <p class="price">$199/mo</p>
+      <button onclick="selectPlan('premium')">Choose Premium</button>
     </div>
   </div>
 
