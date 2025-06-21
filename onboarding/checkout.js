@@ -1,94 +1,70 @@
 // checkout.js
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
 document.addEventListener("DOMContentLoaded", () => {
-  // ✅ Firebase config
-  const firebaseConfig = {
-    apiKey: "AIzaSyBFPU03g16fanyT-a6wJ5NqRxtCwW-Opsg",
-    authDomain: "claritylaunchbot.firebaseapp.com",
-    projectId: "claritylaunchbot",
-    storageBucket: "claritylaunchbot.appspot.com",
-    messagingSenderId: "558688698630",
-    appId: "1:558688698630:web:67de9a65cfe738bd615e87",
-    measurementId: "G-6TES3TB1LK"
-  };
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+  const urlParams = new URLSearchParams(window.location.search);
+  const plan = urlParams.get("plan") || "";
+  const trial = urlParams.get("trial") === "true";
 
-  // ✅ Extract plan from URL
-  const params = new URLSearchParams(window.location.search);
-  const plan = params.get("plan") || "basic";
-  const trial = params.get("trial") === "true";
+  const fullNameInput = document.getElementById("fullName");
+  const emailInput = document.getElementById("email");
+  const submitBtn = document.getElementById("submitBtn");
+  const planSummary = document.getElementById("planSummary");
 
-  // ✅ Display plan summary
-  const summary = document.getElementById("planSummary");
-  const planDisplayNames = {
-    basic: "Basic Plan",
-    pro: "Pro Plan",
-    premium: "Premium Plan"
+  // Map plan IDs to Stripe price IDs
+  const priceIds = {
+    basic: trial ? "price_1RcAt5Fp6CIVhceoKnjn5Ykv" : "price_1RcAt5Fp6CIVhceoKnjn5Ykv",
+    pro: trial ? "price_1RcAttFp6CIVhceod7MbDVNf" : "price_1RcAttFp6CIVhceod7MbDVNf",
+    premium: trial ? "price_1RcAuFFp6CIVhceof1teHR7d" : "price_1RcAuFFp6CIVhceof1teHR7d",
   };
-  const planPrices = {
-    basic: "$129",
-    pro: "$249",
-    premium: "$399"
-  };
-  const planName = planDisplayNames[plan] || "Basic Plan";
-  const priceText = trial ? "Free Trial" : (planPrices[plan] || "$129");
 
-  if (summary) {
-    summary.textContent = `${planName} – ${priceText}`;
+  const priceLabels = {
+    basic: "Basic Plan – $129",
+    pro: "Pro Plan – $249",
+    premium: "Premium Plan – $399",
+  };
+
+  const planId = plan.toLowerCase();
+  const priceId = priceIds[planId];
+
+  if (planId && planSummary) {
+    planSummary.textContent = priceLabels[planId] || "";
   }
 
-  // ✅ Handle form submission
-  const form = document.getElementById("checkoutForm");
-  if (form) {
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const fullNameEl = document.getElementById("fullName");
-      const emailEl = document.getElementById("email");
+  submitBtn.addEventListener("click", async () => {
+    const fullName = fullNameInput.value.trim();
+    const email = emailInput.value.trim();
 
-      const fullName = fullNameEl?.value.trim();
-      const email = emailEl?.value.trim();
+    if (!fullName || !email || !priceId) {
+      alert("Please enter your name, email, and select a plan.");
+      return;
+    }
 
-      if (!fullName || !email) {
-        alert("Please fill in all fields.");
-        return;
-      }
+    try {
+      console.log("Sending Stripe checkout:", { fullName, email, planId });
 
-      try {
-        // Log to Firestore
-        await addDoc(collection(db, "checkouts"), {
+      const response = await fetch("/.netlify/functions/create-checkout-session", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
           fullName,
           email,
-          plan,
-          trial,
-          timestamp: serverTimestamp()
-        });
+          planId: priceId,
+        }),
+      });
 
-        if (trial) {
-          // ➡️ Skip Stripe if trial
-          window.location.href = "thankyou.html";
-        } else {
-          // ➡️ Redirect to Stripe Checkout
-          const response = await fetch('/.netlify/functions/create-checkout-session', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ plan, fullName, email })
-          });
+      const data = await response.json();
 
-          const data = await response.json();
-          if (data.url) {
-            window.location.href = data.url;
-          } else {
-            alert("Checkout session failed. Please try again.");
-          }
-        }
-      } catch (error) {
-        console.error("❌ Error submitting form:", error);
-        alert("Something went wrong. Please try again.");
+      if (response.ok && data.url) {
+        window.location.href = data.url;
+      } else {
+        console.error("Stripe Checkout error:", data);
+        alert("Checkout session failed. Please try again.");
       }
-    });
-  }
+    } catch (error) {
+      console.error("Error during checkout:", error);
+      alert("Something went wrong. Please try again.");
+    }
+  });
 });
