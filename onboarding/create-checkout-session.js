@@ -1,45 +1,48 @@
-// /netlify/functions/create-checkout-session.js
-
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 exports.handler = async (event) => {
-  if (event.httpMethod !== "POST") {
+  if (event.httpMethod !== 'POST') {
     return {
       statusCode: 405,
-      body: JSON.stringify({ message: "Method Not Allowed" }),
+      body: JSON.stringify({ error: 'Method Not Allowed' }),
     };
   }
 
   try {
-    const { plan } = JSON.parse(event.body);
+    const { fullName, email, planId } = JSON.parse(event.body);
 
-    const priceIds = {
-      basic: "price_1RcAt5Fp6CIVhceoKnjn5Ykv",
-      pro: "price_1RcAttFp6CIVhceod7MbDVNf",
-      premium: "price_1RcAuFFp6CIVhceof1teHR7d",
-    };
+    if (!planId || !email || !fullName) {
+      console.error("❌ Missing required fields:", { planId, email, fullName });
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ error: 'Missing required fields' }),
+      };
+    }
 
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card"],
-      mode: "payment",
+      payment_method_types: ['card'],
+      customer_email: email,
       line_items: [
         {
-          price: priceIds[plan] || priceIds.basic,
+          price: planId,
           quantity: 1,
         },
       ],
-      success_url: `${process.env.URL}/onboarding/thankyou.html`,
-      cancel_url: `${process.env.URL}/onboarding/pricing.html`,
+      mode: 'payment',
+      success_url: `${process.env.URL}/thankyou.html`,
+      cancel_url: `${process.env.URL}/checkout.html`,
+      metadata: { fullName },
     });
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ url: session.url }),
+      body: JSON.stringify({ id: session.id }),
     };
-  } catch (err) {
+  } catch (error) {
+    console.error("❌ Stripe error:", error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: err.message }),
+      body: JSON.stringify({ error: 'Stripe checkout session failed' }),
     };
   }
 };
