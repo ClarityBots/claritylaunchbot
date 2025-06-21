@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Select Your Plan</title>
+  <title>Select Plan | ClarityLaunchBot</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
     body {
@@ -12,7 +12,6 @@
       margin: 0;
       padding: 2rem;
       background: #f9f9f9;
-      color: #142233;
       text-align: center;
     }
     h1 {
@@ -36,7 +35,6 @@
     }
     .price {
       margin: 1rem 0;
-      font-size: 1.2rem;
     }
     button {
       background-color: #F04E23;
@@ -47,35 +45,28 @@
       border-radius: 0.5rem;
       cursor: pointer;
     }
-    button:hover {
-      background-color: #d9441e;
-    }
   </style>
 </head>
 <body>
-  <h1>Pick Your ClarityLaunchBot Plan</h1>
+  <h1>Select Your Plan</h1>
   <div class="plans">
     <div class="plan">
       <h2>Basic</h2>
-      <p class="price">$49/month</p>
+      <p class="price">$49/mo</p>
       <button onclick="selectPlan('basic')">Select Basic</button>
     </div>
     <div class="plan">
       <h2>Pro</h2>
-      <p class="price">$99/month</p>
+      <p class="price">$99/mo</p>
       <button onclick="selectPlan('pro')">Select Pro</button>
     </div>
     <div class="plan">
       <h2>Premium</h2>
-      <p class="price">$199/month</p>
+      <p class="price">$199/mo</p>
       <button onclick="selectPlan('premium')">Select Premium</button>
     </div>
   </div>
 
-  <script>
-    function selectPlan(plan) {
-      window.location.href = `checkout.html?plan=${plan}&trial=false`;
-    }
-  </script>
+  <script src="pricing.js"></script>
 </body>
 </html>
