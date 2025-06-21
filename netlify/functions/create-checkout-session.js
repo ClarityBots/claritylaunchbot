@@ -1,40 +1,37 @@
-// /netlify/functions/create-checkout-session.js
-
-const stripe = require("stripe")("sk_test_REPLACE_WITH_YOUR_SECRET_KEY");
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 exports.handler = async (event) => {
-  if (event.httpMethod !== "POST") {
-    return {
-      statusCode: 405,
-      body: JSON.stringify({ message: "Method Not Allowed" }),
-    };
-  }
-
   try {
     const { plan } = JSON.parse(event.body);
 
-    const priceIds = {
-      basic: "price_1RcAt5Fp6CIVhceoKnjn5Ykv",
-      pro: "price_1RcAttFp6CIVhceod7MbDVNf",
-      premium: "price_1RcAuFFp6CIVhceof1teHR7d",
+    const prices = {
+      basic: 1000,
+      pro: 2500,
+      premium: 5000,
     };
 
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card"],
-      mode: "payment",
+      payment_method_types: ['card'],
       line_items: [
         {
-          price: priceIds[plan] || priceIds.basic,
+          price_data: {
+            currency: 'usd',
+            product_data: {
+              name: `${plan.charAt(0).toUpperCase() + plan.slice(1)} Plan`,
+            },
+            unit_amount: prices[plan] || 1000,
+          },
           quantity: 1,
         },
       ],
+      mode: 'payment',
       success_url: `${process.env.URL}/onboarding/thankyou.html`,
       cancel_url: `${process.env.URL}/onboarding/pricing.html`,
     });
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ url: session.url }),
+      body: JSON.stringify({ id: session.id }),
     };
   } catch (err) {
     return {
