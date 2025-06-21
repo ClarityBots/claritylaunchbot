@@ -1,4 +1,4 @@
-<!-- onboarding/pricing.html -->
+<!-- onboarding/pricing.html (with inline JS) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -67,6 +67,10 @@
     </div>
   </div>
 
-  <script src="pricing.js"></script>
+  <script>
+    function selectPlan(plan) {
+      window.location.href = `checkout.html?plan=${plan}&trial=false`;
+    }
+  </script>
 </body>
 </html>
